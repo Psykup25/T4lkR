@@ -1,1 +1,50 @@
-<p class="text-blue-600 text-xl font-bold">login works!</p>
+<!-- bg-page-gradient -->
+ 
+<!-- login.html -->
+<div class="min-h-screen flex flex-col items-center justify-start bg-page-gradient px-4 py-10">
+  <!-- Logo -->
+  <div class="mt-10 mb-12">
+    <!-- Logo -->
+    <img src="/assets/image/logo.svg" alt="Logo T4lkR" class="w-[335px] h-[125px]" />
+  </div>
+
+  <!-- Form -->
+  <form class="w-full max-w-xs flex flex-col gap-6">
+    <!-- Label nom -->
+    <label class="text-[#00FFCC] font-bold text-sm font-['JetBrains_Mono']">Nom utilisateur</label>
+
+    <!-- Input nom -->
+    <input
+      type="text"
+      placeholder="Nom utilisateur"
+      class="bg-transparent border border-[#5F5FFF] shadow-[0_0_20px_1px_#5F5FFF] rounded-[10px] h-[50px] px-4 text-white placeholder-white font-['JetBrains_Mono']"
+    />
+
+    <!-- Label mot de passe -->
+    <label class="text-[#00FFCC] font-bold text-sm font-['JetBrains_Mono']">Mot de passe</label>
+
+    <!-- Input mot de passe -->
+    <input
+      type="password"
+      placeholder="Mot de passe"
+      class="bg-transparent border border-[#5F5FFF] shadow-[0_0_20px_1px_#5F5FFF] rounded-[10px] h-[50px] px-4 text-white placeholder-white font-['JetBrains_Mono']"
+    />
+
+    <!-- Checkbox + label -->
+    <div class="flex items-center gap-2 text-[#00FFCC] text-sm">
+      <input type="checkbox" id="remember" class="w-4 h-4 accent-[#FF01AA]" />
+      <label for="remember">Se souvenir de moi sur cet appareil</label>
+    </div>
+
+    <!-- Mot de passe oublié -->
+    <div class="text-center text-[#00FFCC] text-xs cursor-pointer">Mot de passe oublié ?</div>
+
+    <!-- Bouton se connecter -->
+    <app-button
+      type="submit"
+      class="w-full h-[50px] rounded-full text-white font-bold text-sm font-['JetBrains_Mono'] bg-gradient-to-r from-[#FF01AA] to-[#5F5FFF] shadow-[0_0_20px_1px_#5F5FFF] hover:opacity-90 transition"
+    >
+      Se connecter
+    </app-button>
+  </form>
+</div>

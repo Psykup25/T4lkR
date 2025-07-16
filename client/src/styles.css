@@ -1,4 +1,19 @@
 /* stylelint-disable at-rule-no-unknown */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+body, html {
+  @apply bg-page-gradient text-white min-h-screen;
+  margin: 0;
+  padding: 0;
+}
+
+.bg-page-gradient {
+  background: linear-gradient(0deg, rgba(255, 1, 170, 0.2) 0%, rgba(9, 0, 49, 0.2) 24.97%), #0F0F0F;
+  
+}
+
+
