@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
-import { Button } from '../../../shared/button/button';
+import { Background } from '../../../shared/background/background';
+import { Button } from "../../../shared/button/button";
 
 
 @Component({
   selector: 'app-login',
-  imports: [Button],
+  standalone: true,
+  imports: [Background, Button],
   templateUrl: './login.html',
   styleUrls: ['./login.css'],
-  standalone: true,
 })
 export class Login {}

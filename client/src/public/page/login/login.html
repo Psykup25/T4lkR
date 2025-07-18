@@ -1,52 +1,51 @@
 <!-- bg-page-gradient -->
  
 <!-- login.html -->
-<div class="min-h-screen flex flex-col items-center justify-start bg-page-gradient px-4 py-10">
-  <!-- Logo -->
-  <div class="mt-10 mb-12">
+<app-background>
+  <div class="flex flex-col items-center justify-start w-full h-full">
     <!-- Logo -->
-    <img src="/assets/image/logo.svg" alt="Logo T4lkR" class="w-[335px] h-[125px]" />
+    <div class="mt-10 mb-12">
+      <!-- Logo -->
+      <img src="/assets/image/logo.svg" alt="Logo T4lkR" class="w-[335px] h-[125px]" />
+    </div>
+
+    <!-- Form -->
+    <form class="max-w-xs flex flex-col gap-6 items-center">
+      <!-- Label nom -->
+      <label class="text-[#00FFCC] font-bold text-sm font-['JetBrains_Mono']">Nom d'utilisateur</label>
+      <!-- Input nom utilisateur -->
+      <div class="w-[250px] h-[40px] rounded-[10px] p-[2px] bg-gradient-to-r from-[#5F5FFF]/80 to-[#FF01AA]/80 mb-2 shadow-[0_0_16px_2px_#5F5FFF77]">
+        <input
+          type="text"
+          placeholder="Nom d'utilisateur"
+          class="w-full h-full rounded-[8px] bg-black text-white placeholder-white text-center font-['JetBrains_Mono'] text-[12px] font-bold border-none focus:outline-none px-3"
+        />
+      </div>
+
+      <!-- Label mot de passe -->
+      <label class="text-[#00FFCC] font-bold text-sm font-['JetBrains_Mono']">Mot de passe</label>
+      <!-- Input mot de passe -->
+      <div class="w-[250px] h-[40px] rounded-[10px] p-[2px] bg-gradient-to-r from-[#5F5FFF]/80 to-[#FF01AA]/80 mb-0 shadow-[0_0_16px_2px_#5F5FFF77]">
+        <input
+          type="password"
+          placeholder="Mot de passe"
+          class="w-full h-full rounded-[8px] bg-black text-white placeholder-white text-center font-['JetBrains_Mono'] text-[12px] font-bold border-none focus:outline-none px-3"
+        />
+      </div>
+
+      <!-- Mot de passe oublié -->
+      <div class="text-center text-[#00FFCC] text-xs cursor-pointer mt-0 mb-2">Mot de passe oublié ?</div>
+
+      <!-- Checkbox + label -->
+      <div class="flex items-center gap-2 text-[#00FFCC] text-sm">
+        <input type="checkbox" id="remember" class="w-4 h-4 accent-[#FF01AA]" />
+        <label for="remember">Se souvenir de moi sur cet appareil</label>
+      </div>
+
+      <!-- Bouton se connecter -->
+      <app-button type="submit">
+        Se connecter
+      </app-button>
+    </form>
   </div>
-
-  <!-- Form -->
-  <form class="max-w-xs flex flex-col gap-6 items-center">
-    <!-- Label nom -->
-    <label class="text-[#00FFCC] font-bold text-sm font-['JetBrains_Mono']">Nom d'utilisateur</label>
-    <!-- Input nom utilisateur -->
-    <div class="w-[250px] h-[40px] rounded-[10px] p-[2px] bg-gradient-to-r from-[#5F5FFF]/80 to-[#FF01AA]/80 mb-2 shadow-[0_0_16px_2px_#5F5FFF77]">
-      <input
-        type="text"
-        placeholder="Nom d'utilisateur"
-        class="w-full h-full rounded-[8px] bg-black text-white placeholder-white text-center font-['JetBrains_Mono'] text-[12px] font-bold border-none focus:outline-none px-3"
-      />
-    </div>
-
-    <!-- Label mot de passe -->
-    <label class="text-[#00FFCC] font-bold text-sm font-['JetBrains_Mono']">Mot de passe</label>
-    <!-- Input mot de passe -->
-    <div class="w-[250px] h-[40px] rounded-[10px] p-[2px] bg-gradient-to-r from-[#5F5FFF]/80 to-[#FF01AA]/80 mb-0 shadow-[0_0_16px_2px_#5F5FFF77]">
-      <input
-        type="password"
-        placeholder="Mot de passe"
-        class="w-full h-full rounded-[8px] bg-black text-white placeholder-white text-center font-['JetBrains_Mono'] text-[12px] font-bold border-none focus:outline-none px-3"
-      />
-    </div>
-
-    <!-- Mot de passe oublié -->
-    <div class="text-center text-[#00FFCC] text-xs cursor-pointer mt-0 mb-2">Mot de passe oublié ?</div>
-
-    <!-- Checkbox + label -->
-    <div class="flex items-center gap-2 text-[#00FFCC] text-sm">
-      <input type="checkbox" id="remember" class="w-4 h-4 accent-[#FF01AA]" />
-      <label for="remember">Se souvenir de moi sur cet appareil</label>
-    </div>
-
-    <!-- Bouton se connecter -->
-    <app-button
-      type="submit"
-      class="w-full h-[50px] rounded-full text-white font-bold text-sm font-['JetBrains_Mono'] bg-gradient-to-r from-[#FF01AA] to-[#5F5FFF] shadow-[0_0_20px_1px_#5F5FFF] hover:opacity-90 transition"
-    >
-      Se connecter
-    </app-button>
-  </form>
-</div>
+</app-background>
