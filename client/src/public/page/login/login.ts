@@ -8,6 +8,6 @@ import { Button } from "../../../shared/button/button";
   standalone: true,
   imports: [Background, Button],
   templateUrl: './login.html',
-  styleUrls: ['./login.css'],
+  styleUrl: './login.css',
 })
 export class Login {}
