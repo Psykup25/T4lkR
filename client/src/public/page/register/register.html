@@ -1,0 +1,46 @@
+<app-background>
+  <div class="flex flex-col items-center justify-start w-full h-full">
+    <!-- Logo -->
+    <div class="mt-10 mb-12">
+      <img src="/assets/image/logo.svg" alt="Logo T4lkR" class="w-[335px] h-[125px]" />
+    </div>
+
+    <!-- Form -->
+    <form class="max-w-xs flex flex-col gap-6 items-center">
+      <!-- Input nom d'utilisateur -->
+      <app-input 
+        label="Nom d'utilisateur" 
+        placeholder="Nom d'utilisateur" 
+        type="text">
+      </app-input>
+
+      <!-- Input mot de passe -->
+      <app-input 
+        label="Choisir un mot de passe" 
+        placeholder="Mot de passe" 
+        type="password">
+      </app-input>
+
+      <!-- Input confirmer mot de passe -->
+      <app-input 
+        label="Confirmer le mot de passe" 
+        placeholder="Confirmer le mot de passe" 
+        type="password">
+      </app-input>
+
+      <!-- Input email ou téléphone -->
+      <app-input 
+        label="Adresse mail ou N° de téléphone" 
+        placeholder="Email ou téléphone" 
+        type="text">
+      </app-input>
+
+      <!-- Bouton créer un compte -->
+      <div class="mt-4">
+        <app-button type="submit">
+          Créer un compte
+        </app-button>
+      </div>
+    </form>
+  </div>
+</app-background>

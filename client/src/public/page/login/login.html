@@ -11,27 +11,21 @@
 
     <!-- Form -->
     <form class="max-w-xs flex flex-col gap-6 items-center">
-      <!-- Label nom -->
-      <label class="text-[#00FFCC] font-bold text-sm font-['JetBrains_Mono']">Nom d'utilisateur</label>
-      <!-- Input nom utilisateur -->
-      <div class="w-[250px] h-[40px] rounded-[10px] p-[2px] bg-gradient-to-r from-[#5F5FFF]/80 to-[#FF01AA]/80 mb-2 shadow-[0_0_16px_2px_#5F5FFF77]">
-        <input
-          type="text"
-          placeholder="Nom d'utilisateur"
-          class="w-full h-full rounded-[8px] bg-black text-white placeholder-white text-center font-['JetBrains_Mono'] text-[12px] font-bold border-none focus:outline-none px-3"
-        />
+      <!-- Input nom d'utilisateur -->
+      <div class="mb-2">
+        <app-input 
+          label="Nom d'utilisateur" 
+          placeholder="Nom d'utilisateur" 
+          type="text">
+        </app-input>
       </div>
 
-      <!-- Label mot de passe -->
-      <label class="text-[#00FFCC] font-bold text-sm font-['JetBrains_Mono']">Mot de passe</label>
       <!-- Input mot de passe -->
-      <div class="w-[250px] h-[40px] rounded-[10px] p-[2px] bg-gradient-to-r from-[#5F5FFF]/80 to-[#FF01AA]/80 mb-0 shadow-[0_0_16px_2px_#5F5FFF77]">
-        <input
-          type="password"
-          placeholder="Mot de passe"
-          class="w-full h-full rounded-[8px] bg-black text-white placeholder-white text-center font-['JetBrains_Mono'] text-[12px] font-bold border-none focus:outline-none px-3"
-        />
-      </div>
+      <app-input 
+        label="Mot de passe" 
+        placeholder="Mot de passe" 
+        type="password">
+      </app-input>
 
       <!-- Mot de passe oublié -->
       <div class="text-center text-[#00FFCC] text-xs cursor-pointer mt-0 mb-2">Mot de passe oublié ?</div>
@@ -43,9 +37,11 @@
       </div>
 
       <!-- Bouton se connecter -->
-      <app-button type="submit">
-        Se connecter
-      </app-button>
+      <div class="mt-8">
+        <app-button type="submit">
+          Se connecter
+        </app-button>
+      </div>
     </form>
   </div>
 </app-background>

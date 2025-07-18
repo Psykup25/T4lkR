@@ -15,4 +15,8 @@ export class Accueil {
   navigateToLogin() {
     this.router.navigate(['/login']);
   }
+
+  navigateToRegister() {
+    this.router.navigate(['/register']);
+  }
 }

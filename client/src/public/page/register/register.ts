@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { Background } from '../../../shared/background/background';
-import { Button } from "../../../shared/button/button";
+import { Button } from '../../../shared/button/button';
 import { InputComponent } from '../../../shared/input/input';
 
-
 @Component({
-  selector: 'app-login',
-  standalone: true,
+  selector: 'app-register',
   imports: [Background, Button, InputComponent],
-  templateUrl: './login.html',
-  styleUrl: './login.css',
+  templateUrl: './register.html',
+  styleUrl: './register.css'
 })
-export class Login {}
+export class Register {
+
+}
