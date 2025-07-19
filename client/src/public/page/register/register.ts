@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { Background } from '../../../shared/background/background';
 import { Button } from '../../../shared/button/button';
 import { InputComponent } from '../../../shared/input/input';
@@ -12,6 +13,11 @@ import { InputComponent } from '../../../shared/input/input';
 })
 export class Register {
   
+  constructor(private router: Router) {}
+  
+  // Variable pour stocker le genre sélectionné
+  selectedGender: string = '';
+
   // Génère automatiquement les jours (1-31)
   get days(): number[] {
     return Array.from({ length: 31 }, (_, i) => i + 1);
@@ -46,6 +52,23 @@ export class Register {
       years.push(year);
     }
     return years;
+  }
+
+  // Fonction pour sélectionner un genre
+  selectGender(gender: string) {
+    this.selectedGender = gender;
+  }
+
+  // Fonction trackBy pour optimiser le rendu des mois
+  trackByMonth(index: number, month: { value: number; label: string }): number {
+    return month.value;
+  }
+
+  // Fonction pour créer un compte et rediriger vers login
+  createAccount() {
+    // Ici vous pourrez ajouter la logique de validation et d'envoi des données
+    // Pour l'instant, on redirige directement vers login
+    this.router.navigate(['/login']);
   }
 
 }

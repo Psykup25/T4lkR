@@ -54,7 +54,7 @@
           <div class="w-[80px] h-[40px] rounded-[10px] p-[2px] bg-gradient-to-r from-[#5F5FFF]/80 to-[#FF01AA]/80 shadow-[0_0_16px_2px_#5F5FFF77]">
             <select class="w-full h-full rounded-[8px] bg-black text-white text-center font-['JetBrains_Mono'] text-[12px] font-bold border-none focus:outline-none appearance-none cursor-pointer">
               <option value="">Mois</option>
-              <option *ngFor="let month of months" [value]="month.value">{{month.label}}</option>
+              <option *ngFor="let month of months; trackBy: trackByMonth" [value]="month.value">{{month.label}}</option>
             </select>
           </div>
 
@@ -68,9 +68,65 @@
         </div>
       </div>
 
+      <!-- Sélection du genre -->
+      <div class="flex flex-col items-center w-full">
+        <!-- Label sélectionner un genre -->
+        <label class="text-[#00FFCC] font-bold text-sm font-['JetBrains_Mono'] text-center w-full block mb-3">Sélectionner un genre</label>
+        
+        <!-- Conteneur des 3 options de genre -->
+        <div class="flex gap-4 items-center justify-center">
+          <!-- Option Male -->
+          <div class="flex flex-col items-center cursor-pointer group" (click)="selectGender('male')">
+            <div class="w-[60px] h-[60px] rounded-[15px] p-[2px] transition-all duration-300"
+                 [class]="selectedGender === 'male' ? 'bg-gradient-to-r from-[#00FFCC] to-[#00FFCC] shadow-[0_0_20px_4px_#00FFCC99]' : 'bg-gradient-to-r from-[#5F5FFF]/80 to-[#FF01AA]/80 shadow-[0_0_16px_2px_#5F5FFF77] group-hover:shadow-[0_0_20px_4px_#5F5FFF99]'">
+              <div class="w-full h-full rounded-[13px] bg-black flex items-center justify-center">
+                <img src="/assets/image/Male.svg" alt="Homme" class="w-[40px] h-[40px]" />
+              </div>
+            </div>
+            <span class="text-xs font-['JetBrains_Mono'] mt-2 transition-colors duration-300"
+                  [class]="selectedGender === 'male' ? 'text-[#00FFCC] font-bold' : 'text-[#00FFCC]'">Homme</span>
+          </div>
+
+          <!-- Option Female -->
+          <div class="flex flex-col items-center cursor-pointer group" (click)="selectGender('female')">
+            <div class="w-[60px] h-[60px] rounded-[15px] p-[2px] transition-all duration-300"
+                 [class]="selectedGender === 'female' ? 'bg-gradient-to-r from-[#00FFCC] to-[#00FFCC] shadow-[0_0_20px_4px_#00FFCC99]' : 'bg-gradient-to-r from-[#5F5FFF]/80 to-[#FF01AA]/80 shadow-[0_0_16px_2px_#5F5FFF77] group-hover:shadow-[0_0_20px_4px_#5F5FFF99]'">
+              <div class="w-full h-full rounded-[13px] bg-black flex items-center justify-center">
+                <img src="/assets/image/Female.svg" alt="Femme" class="w-[40px] h-[40px]" />
+              </div>
+            </div>
+            <span class="text-xs font-['JetBrains_Mono'] mt-2 transition-colors duration-300"
+                  [class]="selectedGender === 'female' ? 'text-[#00FFCC] font-bold' : 'text-[#00FFCC]'">Femme</span>
+          </div>
+
+          <!-- Option Component 2 -->
+          <div class="flex flex-col items-center cursor-pointer group" (click)="selectGender('other')">
+            <div class="w-[60px] h-[60px] rounded-[15px] p-[2px] transition-all duration-300"
+                 [class]="selectedGender === 'other' ? 'bg-gradient-to-r from-[#00FFCC] to-[#00FFCC] shadow-[0_0_20px_4px_#00FFCC99]' : 'bg-gradient-to-r from-[#5F5FFF]/80 to-[#FF01AA]/80 shadow-[0_0_16px_2px_#5F5FFF77] group-hover:shadow-[0_0_20px_4px_#5F5FFF99]'">
+              <div class="w-full h-full rounded-[13px] bg-black flex items-center justify-center">
+                <img src="/assets/image/Component 2.svg" alt="Autre" class="w-[40px] h-[40px]" />
+              </div>
+            </div>
+            <span class="text-xs font-['JetBrains_Mono'] mt-2 transition-colors duration-300"
+                  [class]="selectedGender === 'other' ? 'text-[#00FFCC] font-bold' : 'text-[#00FFCC]'">Autre</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Checkbox CGU et Politique de confidentialité -->
+      <div class="flex items-start gap-3 text-[#00FFCC] text-sm max-w-xs">
+        <input type="checkbox" id="terms" class="w-4 h-4 accent-[#FF01AA] mt-0.5 flex-shrink-0" />
+        <label for="terms" class="font-['JetBrains_Mono'] text-left leading-relaxed">
+          J'accepte les 
+          <a href="/cgu" class="text-[#FF01AA] hover:text-[#FF01AA]/80 underline transition-colors duration-200" target="_blank">CGU</a> 
+          et la 
+          <a href="/politique-confidentialite" class="text-[#FF01AA] hover:text-[#FF01AA]/80 underline transition-colors duration-200" target="_blank">politique de confidentialité</a>
+        </label>
+      </div>
+
       <!-- Bouton créer un compte -->
       <div class="mt-4">
-        <app-button type="submit">
+        <app-button type="button" (click)="createAccount()">
           Créer un compte
         </app-button>
       </div>
