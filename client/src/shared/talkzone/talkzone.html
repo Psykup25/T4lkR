@@ -1,20 +1,9 @@
-<div class="w-[120px] h-[140px] rounded-[15px] border-2 overflow-hidden cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-[0_0_20px_4px_rgba(0,255,204,0.4)] flex flex-col"
-     [style.border-color]="borderColor">
-  
-  <!-- Zone image -->
-  <div class="flex-1 bg-gradient-to-br from-gray-800 to-black flex items-center justify-center p-3">
-    <img *ngIf="image" 
-         [src]="image" 
-         [alt]="altText" 
-         class="w-full h-full object-contain rounded">
+<div class="w-[120px] h-[140px] rounded-[15px] p-[2px] bg-gradient-to-r from-neon-purple/80 to-neon-pink/80 overflow-hidden cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-neon-cyan flex flex-col">
+  <div class="flex-1 bg-gradient-to-br from-gray-800 to-black flex items-center justify-center p-3 rounded-t-[13px]">
+    <img *ngIf="image" [src]="image" [alt]="altText" class="w-full h-full object-contain rounded">
     <div *ngIf="!image" class="text-4xl">🎮</div>
   </div>
-  
-  <!-- Zone texte -->
-  <div class="h-[40px] flex items-center justify-center px-2"
-       [style.background]="'linear-gradient(135deg, ' + borderColor + ' 0%, #5F5FFF 100%)'">
-    <span class="text-white font-['JetBrains_Mono'] font-bold text-sm uppercase tracking-wide">
-      {{ title }}
-    </span>
+  <div class="h-[40px] flex items-center justify-center px-2 bg-gradient-to-r from-neon-purple/80 to-neon-pink/80 rounded-b-[13px]">
+    <span class="text-white font-jetbrains font-bold text-sm uppercase tracking-wide">{{ title }}</span>
   </div>
 </div>
