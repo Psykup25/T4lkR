@@ -6,9 +6,10 @@
 
 
 body, html {
-  @apply bg-page-gradient text-white min-h-screen;
+  @apply text-white min-h-screen;
   margin: 0;
   padding: 0;
+  background: #0F0F0F;
 }
 
 .bg-page-gradient {
