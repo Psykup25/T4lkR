@@ -51,4 +51,18 @@ export class Home {
   navigateToProfile() {
     this.router.navigate(['/profile']);
   }
+
+  scrollLeft() {
+    const slider = document.getElementById('talkzoneSlider');
+    if (slider) {
+      slider.scrollBy({ left: -150, behavior: 'smooth' });
+    }
+  }
+
+  scrollRight() {
+    const slider = document.getElementById('talkzoneSlider');
+    if (slider) {
+      slider.scrollBy({ left: 150, behavior: 'smooth' });
+    }
+  }
 }

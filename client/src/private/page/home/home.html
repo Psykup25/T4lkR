@@ -27,26 +27,45 @@
     <section class="mb-12">
       <h2 class="text-neon-cyan text-lg font-bold font-jetbrains text-center mb-6">TalkZones favorites</h2>
       
-      <div class="flex gap-4 justify-center flex-wrap">
-        <app-talkzone 
-          title="#CS2" 
-          image="">
-        </app-talkzone>
+      <div class="relative">
+        <!-- Container avec scroll horizontal -->
+        <div class="flex gap-4 overflow-x-auto pb-4 px-4 scrollbar-hide" id="talkzoneSlider">
+          <div class="flex-shrink-0">
+            <app-talkzone title="#CS2" image=""></app-talkzone>
+          </div>
+          <div class="flex-shrink-0">
+            <app-talkzone title="#TLOU" image=""></app-talkzone>
+          </div>
+          <div class="flex-shrink-0">
+            <app-talkzone title="#SOAD" image=""></app-talkzone>
+          </div>
+          <div class="flex-shrink-0">
+            <app-talkzone title="#PSG" image=""></app-talkzone>
+          </div>
+          <div class="flex-shrink-0">
+            <app-talkzone title="#APEX" image=""></app-talkzone>
+          </div>
+          <div class="flex-shrink-0">
+            <app-talkzone title="#LOL" image=""></app-talkzone>
+          </div>
+        </div>
         
-        <app-talkzone 
-          title="#TLOU" 
-          image="">
-        </app-talkzone>
+        <!-- Boutons de navigation -->
+        <button 
+          (click)="scrollLeft()" 
+          class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-neon-cyan border border-neon-cyan rounded-full w-10 h-10 flex items-center justify-center transition-colors z-10">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+        </button>
         
-        <app-talkzone 
-          title="#SOAD" 
-          image="">
-        </app-talkzone>
-        
-        <app-talkzone 
-          title="#PSG" 
-          image="">
-        </app-talkzone>
+        <button 
+          (click)="scrollRight()" 
+          class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-neon-cyan border border-neon-cyan rounded-full w-10 h-10 flex items-center justify-center transition-colors z-10">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </button>
       </div>
     </section>
 
