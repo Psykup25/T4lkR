@@ -4,20 +4,24 @@
     <!-- Profil utilisateur centré -->
     <div class="flex flex-col items-center mb-12">
       <!-- Avatar avec bordure dégradée -->
-      <div class="w-32 h-32 p-[3px] bg-gradient-to-r from-neon-purple/80 to-neon-pink/80 rounded-full mb-6">
-        <div class="w-full h-full rounded-full bg-black flex items-center justify-center text-6xl">
-          {{ currentUser.avatar }}
+      <div class="w-32 h-32 p-[3px] bg-gradient-to-r from-neon-purple/80 to-neon-pink/80 rounded-full mb-6 cursor-pointer transition-transform duration-200 hover:scale-105" (click)="openAvatarPopup()">
+        <div class="w-full h-full rounded-full bg-black flex items-center justify-center text-6xl overflow-hidden">
+          <img *ngIf="currentUser().avatar !== '👤'" 
+               [src]="currentUser().avatar" 
+               [alt]="currentUser().username"
+               class="w-full h-full object-cover rounded-full">
+          <span *ngIf="currentUser().avatar === '👤'">{{ currentUser().avatar }}</span>
         </div>
       </div>
 
       <!-- Informations utilisateur -->
       <div class="text-center space-y-2">
-        <h1 class="text-neon-cyan text-xl font-bold font-jetbrains">{{ currentUser.username }}</h1>
+        <h1 class="text-neon-cyan text-xl font-bold font-jetbrains">{{ currentUser().username }}</h1>
         
         <!-- Localisation avec icône edit -->
         <div class="flex items-center justify-center gap-2">
           <div *ngIf="!isEditingLocation">
-            <p class="text-white font-jetbrains">{{ currentUser.location }}</p>
+            <p class="text-white font-jetbrains">{{ currentUser().location }}</p>
           </div>
           
           <div *ngIf="isEditingLocation" class="flex items-center gap-2">
@@ -48,7 +52,7 @@
 
         <!-- Statut avec icône edit -->
         <div class="flex items-center justify-center gap-2">
-          <p class="text-neon-cyan font-jetbrains">{{ currentUser.status }}</p>
+          <p class="text-neon-cyan font-jetbrains">{{ currentUser().status }}</p>
           <button class="text-neon-cyan hover:text-neon-cyan/80 transition-colors">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
@@ -86,5 +90,38 @@
       </app-button>
     </div>
 
+  </div>
+
+  <!-- Popup de sélection d'avatar -->
+  <div *ngIf="isAvatarPopupOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" (click)="closeAvatarPopup()">
+    <div class="bg-black border-2 border-neon-cyan rounded-lg p-6 max-w-sm w-full mx-4" (click)="$event.stopPropagation()">
+      <h3 class="text-neon-cyan text-lg font-bold font-jetbrains text-center mb-6">Choisir un avatar</h3>
+      
+      <!-- Grille d'avatars -->
+      <div class="grid grid-cols-3 gap-4 mb-6">
+        <div *ngFor="let avatar of availableAvatars" 
+             class="w-16 h-16 p-[2px] bg-gradient-to-r from-neon-purple/80 to-neon-pink/80 rounded-full cursor-pointer transition-transform duration-200 hover:scale-110"
+             (click)="selectAvatar(avatar)">
+          <div class="w-full h-full rounded-full bg-black flex items-center justify-center overflow-hidden">
+            <img [src]="avatar" [alt]="'Avatar'" class="w-full h-full object-cover rounded-full">
+          </div>
+        </div>
+        
+        <!-- Option pour garder l'emoji par défaut -->
+        <div class="w-16 h-16 p-[2px] bg-gradient-to-r from-neon-purple/80 to-neon-pink/80 rounded-full cursor-pointer transition-transform duration-200 hover:scale-110"
+             (click)="selectAvatar('👤')">
+          <div class="w-full h-full rounded-full bg-black flex items-center justify-center text-2xl">
+            👤
+          </div>
+        </div>
+      </div>
+      
+      <!-- Bouton fermer -->
+      <div class="flex justify-center">
+        <button (click)="closeAvatarPopup()" class="px-6 py-2 border border-neon-cyan text-neon-cyan rounded-lg hover:bg-neon-cyan hover:text-black transition-colors font-jetbrains">
+          Fermer
+        </button>
+      </div>
+    </div>
   </div>
 </app-background>

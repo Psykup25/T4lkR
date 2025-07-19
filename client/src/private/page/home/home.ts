@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, computed } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserService } from '../../../shared/services/user.service';
 import { Background } from '../../../shared/background/background';
 import { Button } from '../../../shared/button/button';
 import { Talkzone } from '../../../shared/talkzone/talkzone';
@@ -13,12 +14,12 @@ import { CommonModule } from '@angular/common';
   templateUrl: './home.html'
 })
 export class Home {
-  constructor(private router: Router) {}
+  constructor(private router: Router, private userService: UserService) {}
 
-  currentUser = {
-    username: 'Jerome_Dev',
-    avatar: null
-  };
+  currentUser = computed(() => ({
+    username: this.userService.currentUser().username,
+    avatar: this.userService.currentUser().avatar
+  }));
 
   conversations = [
     {

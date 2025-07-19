@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, computed } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { UserService } from '../../../shared/services/user.service';
 import { Background } from '../../../shared/background/background';
 import { Button } from '../../../shared/button/button';
 import { CommonModule } from '@angular/common';
@@ -13,27 +14,45 @@ import { CommonModule } from '@angular/common';
 })
 export class Profile {
   
-  constructor(private router: Router) {}
+  constructor(private router: Router, private userService: UserService) {}
 
-  currentUser = {
-    username: 'Jerome_Dev',
-    location: 'Franche Comté', 
-    status: 'En ligne',
-    avatar: '👤'
-  };
+  // Computed signal qui reflète les données du service
+  currentUser = computed(() => this.userService.currentUser());
 
   isEditingLocation = false;
   tempLocation = '';
+  isAvatarPopupOpen = false;
 
-  // Édition de la localisation
+  availableAvatars = [
+    '/assets/image/Avatar1.svg',
+    '/assets/image/Avatar2.svg',
+    '/assets/image/Avatar3.svg',
+    '/assets/image/Avatar4.svg',
+    '/assets/image/Avatar5.svg',
+    '/assets/image/Avatar6.svg'
+  ];
+
+  openAvatarPopup() {
+    this.isAvatarPopupOpen = true;
+  }
+
+  closeAvatarPopup() {
+    this.isAvatarPopupOpen = false;
+  }
+
+  selectAvatar(avatarPath: string) {
+    this.userService.updateAvatar(avatarPath);
+    this.closeAvatarPopup();
+  }
+
   startEditLocation() {
     this.isEditingLocation = true;
-    this.tempLocation = this.currentUser.location;
+    this.tempLocation = this.currentUser().location;
   }
 
   saveLocation() {
     if (this.tempLocation.trim()) {
-      this.currentUser.location = this.tempLocation.trim();
+      this.userService.updateLocation(this.tempLocation.trim());
     }
     this.isEditingLocation = false;
   }
