@@ -6,11 +6,8 @@ import { Button } from '../shared/button/button';
   selector: 'app-root',
   imports: [RouterOutlet],
   templateUrl: './app.html',
-  styleUrl: './app.css',
   standalone: true,
 })
 export class App {
   protected title = 'client';
-
-  
 }

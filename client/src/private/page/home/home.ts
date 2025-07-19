@@ -8,8 +8,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-home',
   standalone: true,
   imports: [Background, Button, Talkzone, CommonModule],
-  templateUrl: './home.html',
-  styleUrl: './home.css',
+  templateUrl: './home.html'
 })
 export class Home {
   currentUser = {
