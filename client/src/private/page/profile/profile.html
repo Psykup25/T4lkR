@@ -1,0 +1,90 @@
+<app-background>
+  <div class="container mx-auto px-4 py-8 max-w-md">
+    
+    <!-- Profil utilisateur centré -->
+    <div class="flex flex-col items-center mb-12">
+      <!-- Avatar avec bordure dégradée -->
+      <div class="w-32 h-32 p-[3px] bg-gradient-to-r from-neon-purple/80 to-neon-pink/80 rounded-full mb-6">
+        <div class="w-full h-full rounded-full bg-black flex items-center justify-center text-6xl">
+          {{ currentUser.avatar }}
+        </div>
+      </div>
+
+      <!-- Informations utilisateur -->
+      <div class="text-center space-y-2">
+        <h1 class="text-neon-cyan text-xl font-bold font-jetbrains">{{ currentUser.username }}</h1>
+        
+        <!-- Localisation avec icône edit -->
+        <div class="flex items-center justify-center gap-2">
+          <div *ngIf="!isEditingLocation">
+            <p class="text-white font-jetbrains">{{ currentUser.location }}</p>
+          </div>
+          
+          <div *ngIf="isEditingLocation" class="flex items-center gap-2">
+            <input 
+              [(ngModel)]="tempLocation"
+              class="bg-black border border-neon-cyan rounded px-2 py-1 text-white font-jetbrains text-sm"
+              placeholder="Votre localisation"
+              (keyup.enter)="saveLocation()"
+              (keyup.escape)="cancelEditLocation()">
+            <button (click)="saveLocation()" class="text-green-400 hover:text-green-300 transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+            </button>
+            <button (click)="cancelEditLocation()" class="text-red-400 hover:text-red-300 transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            </button>
+          </div>
+          
+          <button *ngIf="!isEditingLocation" (click)="startEditLocation()" class="text-neon-cyan hover:text-neon-cyan/80 transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Statut avec icône edit -->
+        <div class="flex items-center justify-center gap-2">
+          <p class="text-neon-cyan font-jetbrains">{{ currentUser.status }}</p>
+          <button class="text-neon-cyan hover:text-neon-cyan/80 transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Icône maison pour retour accueil -->
+    <div class="flex justify-center mb-12">
+      <button (click)="goHome()" class="text-neon-cyan hover:text-neon-cyan/80 transition-all duration-300 hover:scale-110">
+        <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Boutons d'actions -->
+    <div class="flex flex-col gap-4 items-center">
+      <app-button type="button" (click)="openTalkSettings()">
+        Paramètre des Talks
+      </app-button>
+      
+      <app-button type="button" (click)="changePassword()">
+        Modifier mon mot de passe
+      </app-button>
+      
+      <app-button type="button" (click)="logout()">
+        Se déconnecter
+      </app-button>
+      
+      <app-button type="button" (click)="deleteAccount()">
+        Supprimer mon compte
+      </app-button>
+    </div>
+
+  </div>
+</app-background>

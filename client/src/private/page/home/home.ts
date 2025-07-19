@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { Background } from '../../../shared/background/background';
 import { Button } from '../../../shared/button/button';
 import { Talkzone } from '../../../shared/talkzone/talkzone';
@@ -12,6 +13,8 @@ import { CommonModule } from '@angular/common';
   templateUrl: './home.html'
 })
 export class Home {
+  constructor(private router: Router) {}
+
   currentUser = {
     username: 'Jerome_Dev',
     avatar: null
@@ -43,4 +46,8 @@ export class Home {
       borderColor: 'border-neon-pink'
     }
   ];
+
+  navigateToProfile() {
+    this.router.navigate(['/profile']);
+  }
 }
