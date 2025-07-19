@@ -6,7 +6,6 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './talkzone.html',
-  styleUrl: './talkzone.css'
 })
 export class Talkzone {
   @Input() title: string = '#TITLE';

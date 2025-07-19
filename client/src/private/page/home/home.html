@@ -8,19 +8,19 @@
 
     <!-- Profil utilisateur -->
     <div class="flex justify-center items-center gap-4 mb-8">
-      <div class="w-16 h-16 rounded-full border-2 border-gradient-to-r from-[#FF01AA] to-[#5F5FFF] flex items-center justify-center text-xl overflow-hidden">
+      <div class="w-16 h-16 rounded-full border-2 border-gradient-to-r from-neon-pink to-neon-purple flex items-center justify-center text-xl overflow-hidden">
         <img *ngIf="currentUser.avatar" 
              [src]="currentUser.avatar" 
              [alt]="currentUser.username"
              class="w-full h-full object-cover rounded-full">
         <span *ngIf="!currentUser.avatar">👤</span>
       </div>
-      <span class="text-base font-bold text-white font-['JetBrains_Mono']">{{ currentUser.username }}</span>
+      <span class="text-base font-bold text-white font-jetbrains">{{ currentUser.username }}</span>
     </div>
 
     <!-- TalkZones favorites NOUVELLES -->
     <section class="mb-12">
-      <h2 class="text-[#00FFCC] text-lg font-bold font-['JetBrains_Mono'] text-center mb-6">TalkZones favorites</h2>
+      <h2 class="text-neon-cyan text-lg font-bold font-jetbrains text-center mb-6">TalkZones favorites</h2>
       
       <div class="flex gap-4 justify-center flex-wrap">
         <app-talkzone 
@@ -51,14 +51,14 @@
 
     <!-- Rejoindre une TalkZone -->
     <section class="mb-12">
-      <h2 class="text-[#00FFCC] text-lg font-bold font-['JetBrains_Mono'] text-center mb-6">Rejoindre une TalkZone</h2>
+      <h2 class="text-neon-cyan text-lg font-bold font-jetbrains text-center mb-6">Rejoindre une TalkZone</h2>
       
       <div class="flex flex-col gap-4 items-center">
         <app-button type="button">#GAMING</app-button>
         <app-button type="button">#MUSIQUE</app-button>
         <app-button type="button">#CINÉMA</app-button>
         <app-button type="button">#SPORT</app-button>
-        <button class="w-[280px] h-[50px] rounded-[25px] border-2 border-[#00FFCC] bg-transparent text-[#00FFCC] font-['JetBrains_Mono'] font-bold text-sm transition-all duration-300 hover:bg-[#00FFCC] hover:text-black">
+        <button class="w-[280px] h-[50px] rounded-[25px] border-2 border-neon-cyan bg-transparent text-neon-cyan font-jetbrains font-bold text-sm transition-all duration-300 hover:bg-neon-cyan hover:text-black">
           Créer une nouvelle TalkZone
         </button>
       </div>
@@ -66,39 +66,39 @@
 
     <!-- Mes Talks -->
     <section>
-      <h2 class="text-[#00FFCC] text-lg font-bold font-['JetBrains_Mono'] text-center mb-6">Mes Talks</h2>
+      <h2 class="text-neon-cyan text-lg font-bold font-jetbrains text-center mb-6">Mes Talks</h2>
       
       <div class="flex gap-6 justify-center">
         <div class="flex flex-col items-center">
-          <div class="w-16 h-16 rounded-full border-2 border-[#FF01AA] flex items-center justify-center text-2xl relative">
+          <div class="w-16 h-16 rounded-full border-2 border-neon-pink flex items-center justify-center text-2xl relative">
             👽
             <div class="w-3 h-3 bg-red-500 rounded-full absolute -top-1 -right-1"></div>
           </div>
-          <span class="text-white text-sm font-['JetBrains_Mono'] mt-2">User 1</span>
+          <span class="text-white text-sm font-jetbrains mt-2">User 1</span>
         </div>
         
         <div class="flex flex-col items-center">
-          <div class="w-16 h-16 rounded-full border-2 border-[#5F5FFF] flex items-center justify-center text-2xl relative">
+          <div class="w-16 h-16 rounded-full border-2 border-neon-purple flex items-center justify-center text-2xl relative">
             🤖
             <div class="w-3 h-3 bg-green-500 rounded-full absolute -top-1 -right-1"></div>
           </div>
-          <span class="text-white text-sm font-['JetBrains_Mono'] mt-2">User 2</span>
+          <span class="text-white text-sm font-jetbrains mt-2">User 2</span>
         </div>
         
         <div class="flex flex-col items-center">
-          <div class="w-16 h-16 rounded-full border-2 border-[#00FFCC] flex items-center justify-center text-2xl relative">
+          <div class="w-16 h-16 rounded-full border-2 border-neon-cyan flex items-center justify-center text-2xl relative">
             🐻
             <div class="w-3 h-3 bg-yellow-500 rounded-full absolute -top-1 -right-1"></div>
           </div>
-          <span class="text-white text-sm font-['JetBrains_Mono'] mt-2">User 3</span>
+          <span class="text-white text-sm font-jetbrains mt-2">User 3</span>
         </div>
         
         <div class="flex flex-col items-center">
-          <div class="w-16 h-16 rounded-full border-2 border-[#FF01AA] flex items-center justify-center text-2xl relative">
+          <div class="w-16 h-16 rounded-full border-2 border-neon-pink flex items-center justify-center text-2xl relative">
             🤖
             <div class="w-3 h-3 bg-blue-500 rounded-full absolute -top-1 -right-1"></div>
           </div>
-          <span class="text-white text-sm font-['JetBrains_Mono'] mt-2">User 4</span>
+          <span class="text-white text-sm font-jetbrains mt-2">User 4</span>
         </div>
       </div>
     </section>

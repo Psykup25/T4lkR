@@ -6,9 +6,7 @@ import { InputComponent } from '../../../shared/input/input';
 
 @Component({
   selector: 'app-login',
-  standalone: true,
   imports: [Background, Button, InputComponent],
-  templateUrl: './login.html',
-  styleUrl: './login.css',
+  templateUrl: './login.html'
 })
 export class Login {}

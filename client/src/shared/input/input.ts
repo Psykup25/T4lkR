@@ -1,10 +1,11 @@
 import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-input',
   standalone: true,
-  templateUrl: './input.html',
-  styleUrl: './input.css'
+  imports: [CommonModule],
+  templateUrl: './input.html'
 })
 export class InputComponent {
   @Input() label: string = '';

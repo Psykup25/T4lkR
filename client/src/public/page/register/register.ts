@@ -8,22 +8,18 @@ import { InputComponent } from '../../../shared/input/input';
 @Component({
   selector: 'app-register',
   imports: [CommonModule, Background, Button, InputComponent],
-  templateUrl: './register.html',
-  styleUrl: './register.css'
+  templateUrl: './register.html'
 })
 export class Register {
   
   constructor(private router: Router) {}
   
-  // Variable pour stocker le genre sélectionné
   selectedGender: string = '';
 
-  // Génère automatiquement les jours (1-31)
   get days(): number[] {
     return Array.from({ length: 31 }, (_, i) => i + 1);
   }
 
-  // Mois avec leurs abréviations
   get months(): { value: number; label: string }[] {
     return [
       { value: 1, label: 'Jan' },
@@ -41,11 +37,10 @@ export class Register {
     ];
   }
 
-  // Génère automatiquement les années valides pour les majeurs (18+)
   get validYears(): number[] {
     const currentYear = new Date().getFullYear();
-    const maxYear = currentYear - 18; // Année max pour être majeur
-    const minYear = currentYear - 100; // Limite raisonnable (100 ans)
+    const maxYear = currentYear - 18;
+    const minYear = currentYear - 100;
     
     const years = [];
     for (let year = maxYear; year >= minYear; year--) {
@@ -54,21 +49,15 @@ export class Register {
     return years;
   }
 
-  // Fonction pour sélectionner un genre
   selectGender(gender: string) {
     this.selectedGender = gender;
   }
 
-  // Fonction trackBy pour optimiser le rendu des mois
   trackByMonth(index: number, month: { value: number; label: string }): number {
     return month.value;
   }
 
-  // Fonction pour créer un compte et rediriger vers login
   createAccount() {
-    // Ici vous pourrez ajouter la logique de validation et d'envoi des données
-    // Pour l'instant, on redirige directement vers login
     this.router.navigate(['/login']);
   }
-
 }

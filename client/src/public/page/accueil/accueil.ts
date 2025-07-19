@@ -6,8 +6,7 @@ import { Button } from '../../../shared/button/button';
 @Component({
   selector: 'app-accueil',
   imports: [Background, Button],
-  templateUrl: './accueil.html',
-  styleUrl: './accueil.css'
+  templateUrl: './accueil.html'
 })
 export class Accueil {
   constructor(private router: Router) {}
