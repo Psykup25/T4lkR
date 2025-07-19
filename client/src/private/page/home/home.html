@@ -66,31 +66,11 @@
       
       <div class="flex gap-6 justify-center">
         <app-conversation 
-          username="User 1"
-          avatar="👽"
-          statusColor="bg-red-500"
-          borderColor="border-neon-pink">
-        </app-conversation>
-        
-        <app-conversation 
-          username="User 2"
-          avatar="🤖"
-          statusColor="bg-green-500"
-          borderColor="border-neon-purple">
-        </app-conversation>
-        
-        <app-conversation 
-          username="User 3"
-          avatar="🐻"
-          statusColor="bg-yellow-500"
-          borderColor="border-neon-cyan">
-        </app-conversation>
-        
-        <app-conversation 
-          username="User 4"
-          avatar="🤖"
-          statusColor="bg-blue-500"
-          borderColor="border-neon-pink">
+          *ngFor="let conversation of conversations"
+          [username]="conversation.username"
+          [avatar]="conversation.avatar"
+          [status]="conversation.status"
+          [borderColor]="conversation.borderColor">
         </app-conversation>
       </div>
     </section>

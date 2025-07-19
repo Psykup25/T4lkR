@@ -8,6 +8,15 @@ import { Component, Input } from '@angular/core';
 export class Conversation {
   @Input() username: string = '';
   @Input() avatar: string = '👤';
-  @Input() statusColor: string = 'bg-gray-500';
+  @Input() status: 'online' | 'away' | 'offline' = 'offline';
   @Input() borderColor: string = 'border-neon-pink';
+
+  get statusColor(): string {
+    switch (this.status) {
+      case 'online': return 'bg-green-500';
+      case 'away': return 'bg-yellow-500';
+      case 'offline': return 'bg-gray-500';
+      default: return 'bg-gray-500';
+    }
+  }
 }

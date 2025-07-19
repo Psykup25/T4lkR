@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [Background, Button, Talkzone, CommonModule, Conversation],
+  imports: [Background, Button, Talkzone, Conversation, CommonModule],
   templateUrl: './home.html'
 })
 export class Home {
@@ -16,4 +16,31 @@ export class Home {
     username: 'Jerome_Dev',
     avatar: null
   };
+
+  conversations = [
+    {
+      username: 'Alice_2024',
+      avatar: '👽',
+      status: 'offline' as 'online' | 'away' | 'offline',
+      borderColor: 'border-neon-pink'
+    },
+    {
+      username: 'Bot_Helper',
+      avatar: '🤖',
+      status: 'online' as 'online' | 'away' | 'offline',
+      borderColor: 'border-neon-purple'
+    },
+    {
+      username: 'Bear_Gamer',
+      avatar: '🐻',
+      status: 'away' as 'online' | 'away' | 'offline',
+      borderColor: 'border-neon-cyan'
+    },
+    {
+      username: 'AI_Assistant',
+      avatar: '🤖',
+      status: 'online' as 'online' | 'away' | 'offline',
+      borderColor: 'border-neon-pink'
+    }
+  ];
 }
