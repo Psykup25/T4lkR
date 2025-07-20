@@ -74,11 +74,16 @@
       <h2 class="text-neon-cyan text-lg font-bold font-jetbrains text-center mb-6">Rejoindre une TalkZone</h2>
       
       <div class="flex flex-col gap-4 items-center">
-        <app-button type="button">#GAMING</app-button>
-        <app-button type="button">#MUSIQUE</app-button>
-        <app-button type="button">#CINÉMA</app-button>
-        <app-button type="button">#SPORT</app-button>
-        <button class="w-[280px] h-[50px] rounded-[25px] border-2 border-neon-cyan bg-transparent text-neon-cyan font-jetbrains font-bold text-sm transition-all duration-300 hover:bg-neon-cyan hover:text-black">
+        <!-- Grid 2x2 pour les 4 boutons TalkZone -->
+        <div class="grid grid-cols-2 gap-4 w-full max-w-[600px]">
+          <app-button type="button">#GAMING</app-button>
+          <app-button type="button">#MUSIQUE</app-button>
+          <app-button type="button">#CINÉMA</app-button>
+          <app-button type="button">#SPORT</app-button>
+        </div>
+        
+        <!-- Bouton "Créer" reste séparé en dessous avec plus d'espace -->
+        <button class="w-[280px] h-[50px] rounded-[25px] border-2 border-neon-cyan bg-transparent text-neon-cyan font-jetbrains font-bold text-sm transition-all duration-300 hover:bg-neon-cyan hover:text-black mt-4">
           Créer une nouvelle TalkZone
         </button>
       </div>
