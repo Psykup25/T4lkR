@@ -1,11 +1,10 @@
 <!-- bg-page-gradient -->
- 
 <!-- login.html -->
 <app-background>
   <div class="flex flex-col items-center justify-center min-h-screen">
     <!-- Logo -->
-    <div class="mb-10 flex justify-center w-full">
-      <img src="/assets/image/logo.svg" alt="Logo T4lkR" class="w-[220px] h-[80px]" />
+    <div class="mb-10 flex justify-center w-full" style="margin-top:-80px;">
+      <img src="/assets/image/logo.svg" alt="Logo T4lkR" class="w-[350px] h-[130px]" />
     </div>
     <form (ngSubmit)="login()" class="w-full max-w-xs flex flex-col gap-6">
       <app-input
@@ -23,8 +22,8 @@
         autocomplete="current-password">
       </app-input>
       <div *ngIf="error" class="text-red-500 text-center font-bold">{{ error }}</div>
-      <div class="flex justify-center mt-8 w-full">
-        <app-button type="submit" class="max-w-[200px] w-full text-center">Se connecter</app-button>
+      <div class="flex  w-full">
+        <app-button type="submit" class="max-w-[200px] w-full text-center ml-4">Se connecter</app-button>
       </div>
     </form>
   </div>
