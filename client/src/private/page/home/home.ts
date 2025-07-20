@@ -1,6 +1,7 @@
 import { Component, computed } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../../shared/services/user.service';
+import { ApiService } from '../../../shared/services/api.service';
 import { Background } from '../../../shared/background/background';
 import { Button } from '../../../shared/button/button';
 import { Talkzone } from '../../../shared/talkzone/talkzone';
@@ -14,7 +15,18 @@ import { CommonModule } from '@angular/common';
   templateUrl: './home.html'
 })
 export class Home {
-  constructor(private router: Router, private userService: UserService) {}
+  constructor(
+    private router: Router,
+    private userService: UserService,
+    private api: ApiService
+  ) {}
+
+  ngOnInit() {
+    this.api.getHealth().subscribe({
+      next: (res) => console.log('API health:', res),
+      error: (err) => console.error('API error:', err)
+    });
+  }
 
   currentUser = computed(() => ({
     username: this.userService.currentUser().username,

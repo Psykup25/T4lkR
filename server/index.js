@@ -11,8 +11,20 @@ const PORT = process.env.PORT || 3000;
 app.use(helmet({
   crossOriginResourcePolicy: { policy: "cross-origin" }
 }));
+const allowedOrigins = [
+  'http://localhost:4200',
+  'http://127.0.0.1:4200'
+];
+
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:4200',
+  origin: function(origin, callback) {
+    // Autorise les requêtes sans origin (ex: Postman) ou si l'origine est dans la liste
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
 app.use(express.json({ limit: '10mb' }));
@@ -68,6 +80,10 @@ app.get('/api/test', async (req, res) => {
     });
   }
 });
+
+// Importer et utiliser les routes d'authentification
+const authRoutes = require('./routes/auth');
+app.use('/api/auth', authRoutes);
 
 // Gestion des événements MongoDB
 mongoose.connection.on('connected', () => {

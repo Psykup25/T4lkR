@@ -6,63 +6,76 @@
     </div>
 
     <!-- Form -->
-    <form class="max-w-xs flex flex-col gap-6 items-center">
+    <form (ngSubmit)="createAccount()" class="max-w-xs flex flex-col gap-6 items-center">
       <!-- Input nom d'utilisateur -->
       <app-input 
         label="Nom d'utilisateur" 
         placeholder="Nom d'utilisateur" 
-        type="text">
+        [(value)]="username"
+        autocomplete="username">
+      </app-input>
+
+      <!-- Input email -->
+      <app-input 
+        label="Adresse mail" 
+        placeholder="Email" 
+        type="email"
+        [(value)]="email"
+        autocomplete="email">
       </app-input>
 
       <!-- Input mot de passe -->
       <app-input 
-        label="Choisir un mot de passe" 
+        label="Mot de passe" 
         placeholder="Mot de passe" 
-        type="password">
+        type="password"
+        [(value)]="password"
+        autocomplete="new-password">
       </app-input>
 
-      <!-- Input confirmer mot de passe -->
       <app-input 
         label="Confirmer le mot de passe" 
         placeholder="Confirmer le mot de passe" 
-        type="password">
-      </app-input>
-
-      <!-- Input email ou téléphone -->
-      <app-input 
-        label="Adresse mail ou N° de téléphone" 
-        placeholder="Email ou téléphone" 
-        type="text">
+        type="password"
+        [(value)]="confirmPassword"
+        autocomplete="new-password">
       </app-input>
 
       <!-- Date de naissance -->
       <div class="flex flex-col items-center w-full">
-        <!-- Label date de naissance -->
         <label class="text-neon-cyan font-bold text-sm font-jetbrains text-center w-full block mb-3">Date de naissance</label>
-        
-        <!-- Conteneur des 3 menus déroulants -->
         <div class="flex gap-3 items-center">
           <!-- Menu jour -->
           <div class="w-[70px] h-[40px] rounded-[10px] p-[2px] bg-gradient-to-r from-[#5F5FFF]/80 to-[#FF01AA]/80 shadow-[0_0_16px_2px_#5F5FFF77]">
-            <select class="w-full h-full rounded-[8px] bg-black text-white text-center font-['JetBrains_Mono'] text-[12px] font-bold border-none focus:outline-none appearance-none cursor-pointer hide-scrollbar">
-              <option value="">Jour</option>
-              <option *ngFor="let day of days" [value]="day">{{day}}</option>
+            <select
+              class="w-full h-full rounded-[8px] bg-black text-white text-center font-['JetBrains_Mono'] text-[12px] font-bold border-none focus:outline-none appearance-none cursor-pointer hide-scrollbar"
+              [(ngModel)]="birthDay"
+              name="birthDay"
+              required>
+              <option [ngValue]="undefined" disabled selected>Jour</option>
+              <option *ngFor="let day of days" [ngValue]="day">{{day}}</option>
             </select>
           </div>
-
           <!-- Menu mois -->
           <div class="w-[80px] h-[40px] rounded-[10px] p-[2px] bg-gradient-to-r from-[#5F5FFF]/80 to-[#FF01AA]/80 shadow-[0_0_16px_2px_#5F5FFF77]">
-            <select class="w-full h-full rounded-[8px] bg-black text-white text-center font-['JetBrains_Mono'] text-[12px] font-bold border-none focus:outline-none appearance-none cursor-pointer hide-scrollbar">
-              <option value="">Mois</option>
-              <option *ngFor="let month of months; trackBy: trackByMonth" [value]="month.value">{{month.label}}</option>
+            <select
+              class="w-full h-full rounded-[8px] bg-black text-white text-center font-['JetBrains_Mono'] text-[12px] font-bold border-none focus:outline-none appearance-none cursor-pointer hide-scrollbar"
+              [(ngModel)]="birthMonth"
+              name="birthMonth"
+              required>
+              <option [ngValue]="undefined" disabled selected>Mois</option>
+              <option *ngFor="let month of months; trackBy: trackByMonth" [ngValue]="month.value">{{month.label}}</option>
             </select>
           </div>
-
           <!-- Menu année -->
           <div class="w-[80px] h-[40px] rounded-[10px] p-[2px] bg-gradient-to-r from-[#5F5FFF]/80 to-[#FF01AA]/80 shadow-[0_0_16px_2px_#5F5FFF77]">
-            <select class="w-full h-full rounded-[8px] bg-black text-white text-center font-['JetBrains_Mono'] text-[12px] font-bold border-none focus:outline-none appearance-none cursor-pointer hide-scrollbar">
-              <option value="">Année</option>
-              <option *ngFor="let year of validYears" [value]="year">{{year}}</option>
+            <select
+              class="w-full h-full rounded-[8px] bg-black text-white text-center font-['JetBrains_Mono'] text-[12px] font-bold border-none focus:outline-none appearance-none cursor-pointer hide-scrollbar"
+              [(ngModel)]="birthYear"
+              name="birthYear"
+              required>
+              <option [ngValue]="undefined" disabled selected>Année</option>
+              <option *ngFor="let year of validYears" [ngValue]="year">{{year}}</option>
             </select>
           </div>
         </div>
@@ -70,13 +83,13 @@
 
       <!-- Sélection du genre -->
       <div class="flex flex-col items-center w-full">
-        <!-- Label sélectionner un genre -->
         <label class="text-neon-cyan font-bold text-sm font-jetbrains text-center w-full block mb-3">Sélectionner un genre</label>
-        
-        <!-- Conteneur des 3 options de genre -->
         <div class="flex gap-4 items-center justify-center">
           <!-- Option Male -->
-          <div class="flex flex-col items-center cursor-pointer group" (click)="selectGender('male')">
+          <div class="flex flex-col items-center cursor-pointer group"
+               (click)="selectGender('male')"
+               [class.opacity-100]="selectedGender === 'Homme'"
+               [class.opacity-60]="selectedGender !== 'Homme'">
             <div class="w-[60px] h-[60px] rounded-[15px] p-[2px] transition-all duration-300"
                  [class]="selectedGender === 'male' ? 'bg-gradient-to-r from-neon-cyan to-neon-cyan shadow-[0_0_20px_4px_rgba(0,255,204,0.6)]' : 'bg-gradient-to-r from-neon-purple/80 to-neon-pink/80 shadow-neon-purple group-hover:shadow-[0_0_20px_4px_rgba(95,95,255,0.6)]'">
               <div class="w-full h-full rounded-[13px] bg-black flex items-center justify-center">
@@ -84,11 +97,14 @@
               </div>
             </div>
             <span class="text-xs font-jetbrains mt-2 transition-colors duration-300"
-                  [class]="selectedGender === 'male' ? 'text-neon-cyan font-bold' : 'text-neon-cyan'">Homme</span>
+                  [class]="selectedGender === 'Homme' ? 'text-neon-cyan font-bold' : 'text-neon-cyan'">Homme</span>
           </div>
 
           <!-- Option Female -->
-          <div class="flex flex-col items-center cursor-pointer group" (click)="selectGender('female')">
+          <div class="flex flex-col items-center cursor-pointer group"
+               (click)="selectGender('female')"
+               [class.opacity-100]="selectedGender === 'Femme'"
+               [class.opacity-60]="selectedGender !== 'Femme'">
             <div class="w-[60px] h-[60px] rounded-[15px] p-[2px] transition-all duration-300"
                  [class]="selectedGender === 'female' ? 'bg-gradient-to-r from-neon-cyan to-neon-cyan shadow-[0_0_20px_4px_rgba(0,255,204,0.6)]' : 'bg-gradient-to-r from-neon-purple/80 to-neon-pink/80 shadow-neon-purple group-hover:shadow-[0_0_20px_4px_rgba(95,95,255,0.6)]'">
               <div class="w-full h-full rounded-[13px] bg-black flex items-center justify-center">
@@ -96,11 +112,14 @@
               </div>
             </div>
             <span class="text-xs font-jetbrains mt-2 transition-colors duration-300"
-                  [class]="selectedGender === 'female' ? 'text-neon-cyan font-bold' : 'text-neon-cyan'">Femme</span>
+                  [class]="selectedGender === 'Femme' ? 'text-neon-cyan font-bold' : 'text-neon-cyan'">Femme</span>
           </div>
 
-          <!-- Option Component 2 -->
-          <div class="flex flex-col items-center cursor-pointer group" (click)="selectGender('other')">
+          <!-- Option Other -->
+          <div class="flex flex-col items-center cursor-pointer group"
+               (click)="selectGender('other')"
+               [class.opacity-100]="selectedGender === 'Autre'"
+               [class.opacity-60]="selectedGender !== 'Autre'">
             <div class="w-[60px] h-[60px] rounded-[15px] p-[2px] transition-all duration-300"
                  [class]="selectedGender === 'other' ? 'bg-gradient-to-r from-neon-cyan to-neon-cyan shadow-[0_0_20px_4px_rgba(0,255,204,0.6)]' : 'bg-gradient-to-r from-neon-purple/80 to-neon-pink/80 shadow-neon-purple group-hover:shadow-[0_0_20px_4px_rgba(95,95,255,0.6)]'">
               <div class="w-full h-full rounded-[13px] bg-black flex items-center justify-center">
@@ -108,14 +127,15 @@
               </div>
             </div>
             <span class="text-xs font-jetbrains mt-2 transition-colors duration-300"
-                  [class]="selectedGender === 'other' ? 'text-neon-cyan font-bold' : 'text-neon-cyan'">Autre</span>
+                  [class]="selectedGender === 'Autre' ? 'text-neon-cyan font-bold' : 'text-neon-cyan'">Autre</span>
           </div>
         </div>
       </div>
 
       <!-- Checkbox CGU et Politique de confidentialité -->
       <div class="flex items-start gap-3 text-neon-cyan text-sm max-w-xs">
-        <input type="checkbox" id="terms" class="w-4 h-4 accent-neon-pink mt-0.5 flex-shrink-0" />
+        <input type="checkbox" id="terms" class="w-4 h-4 accent-neon-pink mt-0.5 flex-shrink-0"
+               [(ngModel)]="acceptedTerms" name="acceptedTerms" />
         <label for="terms" class="font-jetbrains text-left leading-relaxed">
           J'accepte les 
           <a href="/cgu" class="text-neon-pink hover:text-neon-pink/80 underline transition-colors duration-200" target="_blank">CGU</a> 
@@ -126,7 +146,7 @@
 
       <!-- Bouton créer un compte -->
       <div class="mt-4">
-        <app-button type="button" (click)="createAccount()">
+        <app-button type="submit">
           Créer un compte
         </app-button>
       </div>
