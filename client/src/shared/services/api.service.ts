@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
@@ -7,24 +7,27 @@ export class ApiService {
 
   constructor(private http: HttpClient) {}
 
-  getHealth() {
-    return this.http.get(`${this.apiUrl}/health`);
-  }
-
-  // Exemple: récupérer le profil utilisateur
-  getProfile() {
-    return this.http.get(`${this.apiUrl}/users/profile`);
-  }
-
-  // Exemple: inscription
   register(data: any) {
     return this.http.post(`${this.apiUrl}/auth/register`, data);
   }
 
-  // Exemple: connexion
   login(data: any) {
     return this.http.post(`${this.apiUrl}/auth/login`, data);
   }
 
+  getProfile() {
+    const token = localStorage.getItem('token');
+    let headers: HttpHeaders | undefined = undefined;
+    if (token) {
+      headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+    }
+    return this.http.get(`${this.apiUrl}/users/profile`, headers ? { headers } : {});
+  }
+
+  getHealth() {
+    return this.http.get(`${this.apiUrl}/health`);
+  }
+
+  // ...autres méthodes si besoin...
   // Ajoute ici d'autres méthodes selon tes besoins
 }

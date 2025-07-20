@@ -1,33 +1,48 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../../../shared/services/api.service';
-import { Background } from '../../../shared/background/background';
-import { Button } from "../../../shared/button/button";
+import { UserService } from '../../../shared/services/user.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { InputComponent } from '../../../shared/input/input';
+import { Button } from '../../../shared/button/button';
+import { Background } from '../../../shared/background/background';
 
 
 @Component({
   selector: 'app-login',
-  imports: [Background, Button, InputComponent],
+  standalone: true,
+  imports: [CommonModule, FormsModule, InputComponent, Button, Background],
   templateUrl: './login.html'
 })
 export class Login {
-  email: string = '';
+  username: string = '';
   password: string = '';
+  error: string = '';
 
-  constructor(private router: Router, private api: ApiService) {}
+  constructor(
+    private router: Router,
+    private api: ApiService,
+    private userService: UserService
+  ) {}
 
   login() {
     const data = {
-      email: this.email,
+      username: this.username,
       password: this.password
     };
 
     this.api.login(data).subscribe({
-      next: (res) => {
+      next: (res: any) => {
+        // Stocke le token et l'utilisateur
+        localStorage.setItem('token', res.token);
+        this.userService.setCurrentUser(res.user);
+        // Redirige vers la page home
         this.router.navigate(['/home']);
       },
-      error: err => alert(err.error?.message || 'Erreur lors de la connexion')
+      error: err => {
+        this.error = err.error?.message || 'Erreur lors de la connexion';
+      }
     });
   }
 }

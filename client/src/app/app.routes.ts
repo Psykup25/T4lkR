@@ -13,7 +13,19 @@ export const routes: Routes = [
   { path: '', component: Accueil },
   { path: 'login', component: Login },
   { path: 'register', component: Register },
-  { path: 'home', component: Home },
+  { 
+    path: 'home', 
+    component: Home,
+    canActivate: [() => {
+      const token = localStorage.getItem('token');
+      // Vérifie que le token existe et n'est pas vide
+      if (!token || token === 'undefined' || token === 'null') {
+        window.location.href = '/login';
+        return false;
+      }
+      return true;
+    }]
+  },
   { path: 'profile', component: Profile },
   { path: 'gaming', component: Gaming },
   { path: 'sport', component: Sport },

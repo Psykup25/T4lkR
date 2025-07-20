@@ -2,45 +2,29 @@
  
 <!-- login.html -->
 <app-background>
-  <div class="flex flex-col items-center justify-start w-full h-full">
+  <div class="flex flex-col items-center justify-center min-h-screen">
     <!-- Logo -->
-    <div class="mt-10 mb-12">
-      <!-- Logo -->
-      <img src="/assets/image/logo.svg" alt="Logo T4lkR" class="w-[335px] h-[125px]" />
+    <div class="mb-10 flex justify-center w-full">
+      <img src="/assets/image/logo.svg" alt="Logo T4lkR" class="w-[220px] h-[80px]" />
     </div>
-
-    <!-- Form -->
-    <form class="max-w-xs flex flex-col gap-6 items-center">
-      <!-- Input nom d'utilisateur -->
-      <div class="mb-2">
-        <app-input 
-          label="Nom d'utilisateur" 
-          placeholder="Nom d'utilisateur" 
-          type="text">
-        </app-input>
-      </div>
-
-      <!-- Input mot de passe -->
-      <app-input 
-        label="Mot de passe" 
-        placeholder="Mot de passe" 
-        type="password">
+    <form (ngSubmit)="login()" class="w-full max-w-xs flex flex-col gap-6">
+      <app-input
+        label="Nom d'utilisateur"
+        placeholder="Nom d'utilisateur"
+        type="text"
+        [(value)]="username"
+        autocomplete="username">
       </app-input>
-
-      <!-- Mot de passe oublié -->
-      <div class="text-center text-neon-cyan text-xs cursor-pointer mt-0 mb-2">Mot de passe oublié ?</div>
-
-      <!-- Checkbox + label -->
-      <div class="flex items-center gap-2 text-neon-cyan text-sm">
-        <input type="checkbox" id="remember" class="w-4 h-4 accent-neon-pink" />
-        <label for="remember">Se souvenir de moi sur cet appareil</label>
-      </div>
-
-      <!-- Bouton se connecter -->
-      <div class="mt-8">
-        <app-button type="submit">
-          Se connecter
-        </app-button>
+      <app-input
+        label="Mot de passe"
+        placeholder="Mot de passe"
+        type="password"
+        [(value)]="password"
+        autocomplete="current-password">
+      </app-input>
+      <div *ngIf="error" class="text-red-500 text-center font-bold">{{ error }}</div>
+      <div class="flex justify-center mt-8 w-full">
+        <app-button type="submit" class="max-w-[200px] w-full text-center">Se connecter</app-button>
       </div>
     </form>
   </div>

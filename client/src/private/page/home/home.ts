@@ -29,8 +29,8 @@ export class Home {
   }
 
   currentUser = computed(() => ({
-    username: this.userService.currentUser().username,
-    avatar: this.userService.currentUser().avatar
+    username: this.userService.currentUser()?.username,
+    avatar: this.userService.currentUser()?.avatar
   }));
 
   conversations = [

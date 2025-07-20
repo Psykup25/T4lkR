@@ -39,14 +39,16 @@ router.post('/register', async (req, res) => {
 
 router.post('/login', async (req, res) => {
   try {
-    const { email, password } = req.body;
-    const user = await User.findOne({ email });
+    console.log('Login payload:', req.body); // <-- Ajout debug
+
+    const { username, password } = req.body; // <-- doit être username
+    const user = await User.findOne({ username }); // <-- recherche par username
     if (!user)
-      return res.status(401).json({ message: 'Email ou mot de passe incorrect.' });
+      return res.status(401).json({ message: 'Nom d\'utilisateur ou mot de passe incorrect.' });
 
     const valid = await bcrypt.compare(password, user.passwordHash);
     if (!valid)
-      return res.status(401).json({ message: 'Email ou mot de passe incorrect.' });
+      return res.status(401).json({ message: 'Nom d\'utilisateur ou mot de passe incorrect.' });
 
     // Générer un token JWT (optionnel)
     const token = jwt.sign(

@@ -11,7 +11,7 @@ export class UserService {
     status: 'En ligne'
   });
 
-  currentUser = this._currentUser.asReadonly();
+  readonlyUser = this._currentUser.asReadonly();
 
   updateUser(userData: Partial<{ username: string; avatar: string; location: string; status: string; }>) {
     this._currentUser.update(current => ({ ...current, ...userData }));
@@ -27,5 +27,26 @@ export class UserService {
 
   updateStatus(status: string) {
     this._currentUser.update(current => ({ ...current, status }));
+  }
+
+  private user: any = null;
+
+  setCurrentUser(user: any) {
+    this.user = user;
+    localStorage.setItem('user', JSON.stringify(user));
+  }
+
+  currentUser() {
+    if (!this.user) {
+      const userStr = localStorage.getItem('user');
+      if (userStr) this.user = JSON.parse(userStr);
+    }
+    return this.user;
+  }
+
+  clear() {
+    this.user = null;
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
   }
 }
