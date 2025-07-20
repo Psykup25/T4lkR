@@ -162,23 +162,3 @@
   </div>
 
 </app-background>
-  <div class="flex flex-col items-center">
-    <div 
-      class="w-32 h-32 rounded-full bg-black flex items-center justify-center mb-4 border-4 border-neon-cyan cursor-pointer transition-transform duration-200 hover:scale-105"
-      (click)="showAvatarPicker = !showAvatarPicker"
-      title="Changer d'avatar"
-    >
-      <span class="text-6xl">{{ currentUser().avatar }}</span>
-      <!-- Optionnel : icône crayon pour indiquer l'édition -->
-      <span class="absolute right-2 bottom-2 text-neon-cyan text-xl" *ngIf="!showAvatarPicker">✏️</span>
-    </div>
-    <div *ngIf="showAvatarPicker" class="flex gap-2 flex-wrap justify-center mb-4 mt-2">
-      <button *ngFor="let emoji of avatarEmojis"
-              (click)="changeAvatar(emoji)"
-              class="text-3xl p-2 rounded-full hover:bg-neon-cyan/20 transition"
-              [class.ring-2]="currentUser().avatar === emoji"
-              [class.ring-neon-cyan]="currentUser().avatar === emoji">
-        {{ emoji }}
-      </button>
-    </div>
-  </div>
