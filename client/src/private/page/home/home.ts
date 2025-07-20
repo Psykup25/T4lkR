@@ -83,4 +83,16 @@ export class Home {
   navigateToGaming() {
     this.router.navigate(['/gaming']);
   }
+
+  navigateToSport() {
+    this.router.navigate(['/sport']);
+  }
+
+  navigateToCinema() {
+    this.router.navigate(['/cinema']);
+  }
+
+  navigateToMusique() {
+    this.router.navigate(['/musique']);
+  }
 }

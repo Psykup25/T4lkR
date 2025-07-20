@@ -1,0 +1,79 @@
+<app-background>
+  <div class="container mx-auto px-4 py-4">
+    
+    <!-- Header avec icône maison à gauche et icône recherche à droite -->
+    <header class="flex justify-between items-center mb-8">
+      <!-- Icône maison à gauche -->
+      <button (click)="goHome()" class="text-neon-cyan transition-all duration-300 hover:scale-105 hover:drop-shadow-[0_0_10px_rgba(255,1,170,0.8)]">
+        <svg class="w-16 h-16" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+      </button>
+
+      <!-- Titre centré -->
+      <h1 class="text-neon-cyan text-2xl font-bold font-jetbrains tracking-wider">#MUSIQUE</h1>
+
+      <!-- Icône recherche à droite -->
+      <button (click)="toggleSearch()" class="text-neon-cyan transition-all duration-300 hover:scale-105">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+      </button>
+    </header>
+
+    <!-- Barre de recherche -->
+    <div *ngIf="isSearchOpen" class="mb-6 transition-all duration-300">
+      <div class="flex items-center gap-2 max-w-md mx-auto">
+        <input 
+          type="text" 
+          [(ngModel)]="searchTermValue"
+          placeholder="#RAP, #ROCK, #POP..."
+          class="flex-1 bg-black border border-neon-cyan rounded-lg px-4 py-2 text-white font-jetbrains placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-neon-cyan"
+          (keyup.enter)="performSearch()"
+          #searchInput>
+        <button (click)="performSearch()" class="bg-gradient-to-r from-neon-purple/80 to-neon-pink/80 text-white px-4 py-2 rounded-lg hover:opacity-80 transition-opacity">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+        </button>
+        <button (click)="clearSearch()" class="text-red-400 hover:text-red-300 transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- TalkZones à la une -->
+    <section class="mb-8">
+      <h2 class="text-neon-cyan text-lg font-bold font-jetbrains text-center mb-6 tracking-wide">TALKZONES À LA UNE</h2>
+      
+      <div class="flex justify-center gap-4">
+        <app-talkzone title="#RAP" image=""></app-talkzone>
+        <app-talkzone title="#ROCK" image=""></app-talkzone>
+        <app-talkzone title="#POP" image=""></app-talkzone>
+      </div>
+    </section>
+
+    <!-- Toutes les TalkZones Musique -->
+    <section>
+      <h2 class="text-neon-cyan text-lg font-bold font-jetbrains text-center mb-6 tracking-wide">
+        {{ searchTerm() ? 'RÉSULTATS DE RECHERCHE' : 'TOUTES LES TALKZONES #MUSIQUE' }}
+      </h2>
+      
+      <div class="grid grid-cols-3 gap-4 justify-items-center">
+        <app-talkzone 
+          *ngFor="let talkzone of filteredTalkzones()"
+          [title]="talkzone.title" 
+          [image]="talkzone.image">
+        </app-talkzone>
+      </div>
+      
+      <!-- Message si aucun résultat -->
+      <div *ngIf="searchTerm() && filteredTalkzones().length === 0" class="text-center text-gray-400 font-jetbrains mt-8">
+        Aucune TalkZone trouvée pour "{{ searchTerm() }}"
+      </div>
+    </section>
+
+  </div>
+</app-background>
