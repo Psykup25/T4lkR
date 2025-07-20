@@ -79,4 +79,8 @@ export class Home {
       slider.scrollBy({ left: 100, behavior: 'smooth' });
     }
   }
+
+  navigateToGaming() {
+    this.router.navigate(['/gaming']);
+  }
 }
