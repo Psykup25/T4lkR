@@ -24,4 +24,8 @@ export class UserService {
   updateLocation(location: string) {
     this._currentUser.update(current => ({ ...current, location }));
   }
+
+  updateStatus(status: string) {
+    this._currentUser.update(current => ({ ...current, status }));
+  }
 }

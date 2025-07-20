@@ -22,6 +22,7 @@ export class Profile {
   isEditingLocation = false;
   tempLocation = '';
   isAvatarPopupOpen = false;
+  isEditingStatus = false;
 
   availableAvatars = [
     '/assets/image/Avatar1.svg',
@@ -30,6 +31,12 @@ export class Profile {
     '/assets/image/Avatar4.svg',
     '/assets/image/Avatar5.svg',
     '/assets/image/Avatar6.svg'
+  ];
+
+  statusOptions = [
+    { value: 'En ligne', label: 'En ligne', icon: '/assets/image/online.svg' },
+    { value: 'Absent', label: 'Absent', icon: '/assets/image/away.svg' },
+    { value: 'Anonyme', label: 'Anonyme', icon: '/assets/image/Anon.svg' }
   ];
 
   openAvatarPopup() {
@@ -60,6 +67,20 @@ export class Profile {
   cancelEditLocation() {
     this.isEditingLocation = false;
     this.tempLocation = '';
+  }
+
+  // Gestion du popup statut
+  startEditStatus() {
+    this.isEditingStatus = true;
+  }
+
+  selectStatus(status: string) {
+    this.userService.updateUser({ status });
+    this.isEditingStatus = false;
+  }
+
+  cancelEditStatus() {
+    this.isEditingStatus = false;
   }
 
   // Actions des boutons
