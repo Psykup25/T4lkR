@@ -1,34 +1,42 @@
 <app-background>
   <div class="container mx-auto px-4 py-8 max-w-md">
     
-    <!-- Profil utilisateur centré -->
-    <div class="flex flex-col items-center mb-12">
-      <!-- Avatar avec bordure dégradée -->
-      <div class="w-32 h-32 p-[3px] bg-gradient-to-r from-neon-purple/80 to-neon-pink/80 rounded-full mb-6 cursor-pointer transition-transform duration-200 hover:scale-105" (click)="openAvatarPopup()">
-        <div class="w-full h-full rounded-full bg-black flex items-center justify-center text-6xl overflow-hidden">
-          <img *ngIf="currentUser().avatar !== '👤'" 
-               [src]="currentUser().avatar" 
-               [alt]="currentUser().username"
-               class="w-full h-full object-cover rounded-full">
-          <span *ngIf="currentUser().avatar === '👤'">{{ currentUser().avatar }}</span>
+    <!-- Logo principal en haut -->
+    <header class="flex justify-center mb-8">
+      <img src="/assets/image/logo.svg" alt="T4lkR Logo" class="h-20">
+    </header>
+
+    <!-- Profil utilisateur avec avatar et informations alignés -->
+    <div class="flex items-start gap-6 mb-12">
+      <!-- Avatar à gauche (plus gros) -->
+      <div class="flex-shrink-0">
+        <div class="w-32 h-32 p-[3px] bg-gradient-to-r from-neon-purple/80 to-neon-pink/80 rounded-full cursor-pointer transition-transform duration-200 hover:scale-105" (click)="openAvatarPopup()">
+          <div class="w-full h-full rounded-full bg-black flex items-center justify-center text-5xl overflow-hidden">
+            <img *ngIf="currentUser().avatar !== '👤'" 
+                 [src]="currentUser().avatar" 
+                 [alt]="currentUser().username"
+                 class="w-full h-full object-cover rounded-full">
+            <span *ngIf="currentUser().avatar === '👤'">{{ currentUser().avatar }}</span>
+          </div>
         </div>
       </div>
 
-      <!-- Informations utilisateur -->
-      <div class="text-center space-y-2">
-        <h1 class="text-neon-cyan text-xl font-bold font-jetbrains">{{ currentUser().username }}</h1>
+      <!-- Informations utilisateur à droite (textes plus petits) -->
+      <div class="flex-1 space-y-2">
+        <h1 class="text-neon-cyan text-lg font-bold font-jetbrains">{{ currentUser().username }}</h1>
         
         <!-- Localisation avec icône edit -->
-        <div class="flex items-center justify-center gap-2">
-          <div *ngIf="!isEditingLocation">
-            <p class="text-white font-jetbrains">{{ currentUser().location }}</p>
+        <div class="flex items-center gap-2">
+          <div *ngIf="!isEditingLocation" class="flex-1">
+            <p class="text-white font-jetbrains text-sm">{{ currentUser().location }}</p>
           </div>
           
-          <div *ngIf="isEditingLocation" class="flex items-center gap-2">
+          <div *ngIf="isEditingLocation" class="flex items-center gap-2 flex-1">
             <input 
               [(ngModel)]="tempLocation"
-              class="bg-black border border-neon-cyan rounded px-2 py-1 text-white font-jetbrains text-sm"
-              placeholder="Votre localisation"
+              maxlength="40"
+              class="bg-black border border-neon-cyan rounded px-2 py-1 text-white font-jetbrains text-sm flex-1"
+              placeholder="Votre localisation (max 40 caractères)"
               (keyup.enter)="saveLocation()"
               (keyup.escape)="cancelEditLocation()">
             <button (click)="saveLocation()" class="text-green-400 hover:text-green-300 transition-colors">
@@ -44,20 +52,20 @@
           </div>
           
           <button *ngIf="!isEditingLocation" (click)="startEditLocation()" class="text-neon-cyan hover:text-neon-cyan/80 transition-colors">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
             </svg>
           </button>
         </div>
 
         <!-- Statut avec icône edit -->
-        <div class="flex items-center justify-center gap-2">
-          <div class="flex items-center gap-2">
-            <p class="text-neon-cyan font-jetbrains">{{ currentUser().status }}</p>
-            <img [src]="getCurrentStatusIcon()" [alt]="currentUser().status" class="w-5 h-5">
+        <div class="flex items-center gap-2">
+          <div class="flex items-center gap-2 flex-1">
+            <p class="text-neon-cyan font-jetbrains text-sm">{{ currentUser().status }}</p>
+            <img [src]="getCurrentStatusIcon()" [alt]="currentUser().status" class="w-4 h-4">
           </div>
           <button (click)="startEditStatus()" class="text-neon-cyan hover:text-neon-cyan/80 transition-colors">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
             </svg>
           </button>

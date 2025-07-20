@@ -58,10 +58,15 @@ export class Profile {
   }
 
   saveLocation() {
-    if (this.tempLocation.trim()) {
+    if (this.tempLocation.trim() && this.tempLocation.trim().length <= 40) {
       this.userService.updateLocation(this.tempLocation.trim());
+      this.isEditingLocation = false;
+    } else if (this.tempLocation.trim().length > 40) {
+      // Optionnel: afficher un message d'erreur
+      console.warn('La localisation ne peut pas dépasser 40 caractères');
+    } else {
+      this.isEditingLocation = false;
     }
-    this.isEditingLocation = false;
   }
 
   cancelEditLocation() {
