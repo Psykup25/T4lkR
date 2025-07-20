@@ -28,6 +28,15 @@ export class ApiService {
     return this.http.get(`${this.apiUrl}/health`);
   }
 
+  updateProfile(data: any) {
+    const token = localStorage.getItem('token');
+    let headers: HttpHeaders | undefined = undefined;
+    if (token) {
+      headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
+    }
+    return this.http.patch(`${this.apiUrl}/users/profile`, data, headers ? { headers } : {});
+  }
+
   // ...autres méthodes si besoin...
   // Ajoute ici d'autres méthodes selon tes besoins
 }

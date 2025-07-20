@@ -2,6 +2,7 @@ import { Component, computed } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../../shared/services/user.service';
+import { ApiService } from '../../../shared/services/api.service';
 import { Background } from '../../../shared/background/background';
 import { Button } from '../../../shared/button/button';
 import { CommonModule } from '@angular/common';
@@ -13,16 +14,15 @@ import { CommonModule } from '@angular/common';
   templateUrl: './profile.html'
 })
 export class Profile {
-  
-  constructor(private router: Router, private userService: UserService) {}
+  constructor(private router: Router, private userService: UserService, private api: ApiService) {}
 
-  // Computed signal qui reflète les données du service
   currentUser = computed(() => this.userService.currentUser());
 
   isEditingLocation = false;
   tempLocation = '';
   isAvatarPopupOpen = false;
   isEditingStatus = false;
+  showAvatarPicker = false;
 
   availableAvatars = [
     '/assets/image/Avatar1.svg',
@@ -39,16 +39,18 @@ export class Profile {
     { value: 'Anonyme', label: 'Anonyme', icon: '/assets/image/Anon.svg' }
   ];
 
-  openAvatarPopup() {
-    this.isAvatarPopupOpen = true;
-  }
+  avatarEmojis = [
+    '👤','👽','🤖','🐻','🐱','🐶','🦊','🐸','🐵','🦄','🐼','🐧','🐯','🐰','🦁','🐨','🐙','🐢','🐲','🧙‍♂️','🧑‍🚀','🧑‍🎤','🧑‍💻','🧑‍🏫','🧑‍🎨','🧑‍🚒','🧑‍✈️'
+  ];
 
-  closeAvatarPopup() {
-    this.isAvatarPopupOpen = false;
-  }
+  openAvatarPopup() { this.isAvatarPopupOpen = true; }
+  closeAvatarPopup() { this.isAvatarPopupOpen = false; }
 
   selectAvatar(avatarPath: string) {
-    this.userService.updateAvatar(avatarPath);
+    // Met à jour l'avatar côté backend et frontend
+    const updateProfileResult = this.api.updateProfile({ avatar: avatarPath });
+    // Si updateProfile retourne void, effectuez la mise à jour localement
+    this.userService.setCurrentUser({ ...this.currentUser(), avatar: avatarPath });
     this.closeAvatarPopup();
   }
 
@@ -62,7 +64,6 @@ export class Profile {
       this.userService.updateLocation(this.tempLocation.trim());
       this.isEditingLocation = false;
     } else if (this.tempLocation.trim().length > 40) {
-      // Optionnel: afficher un message d'erreur
       console.warn('La localisation ne peut pas dépasser 40 caractères');
     } else {
       this.isEditingLocation = false;
@@ -74,19 +75,12 @@ export class Profile {
     this.tempLocation = '';
   }
 
-  // Gestion du popup statut
-  startEditStatus() {
-    this.isEditingStatus = true;
-  }
-
+  startEditStatus() { this.isEditingStatus = true; }
   selectStatus(status: string) {
     this.userService.updateStatus(status);
     this.isEditingStatus = false;
   }
-
-  cancelEditStatus() {
-    this.isEditingStatus = false;
-  }
+  cancelEditStatus() { this.isEditingStatus = false; }
 
   getCurrentStatusIcon(): string {
     const currentStatus = this.currentUser().status;
@@ -94,26 +88,23 @@ export class Profile {
     return statusOption ? statusOption.icon : '/assets/image/online.svg';
   }
 
-  // Actions des boutons
-  openTalkSettings() {
-    console.log('Paramètre des Talks');
+  changeAvatar(emoji: string) {
+    const user = this.userService.currentUser();
+    if (!user) return;
+    user.avatar = emoji;
+    this.api.updateProfile({ avatar: emoji }).subscribe({
+      next: (updatedUser: any) => {
+        this.userService.setCurrentUser(updatedUser);
+        this.showAvatarPicker = false;
+      },
+      error: (err: any) => alert('Erreur lors de la mise à jour de l\'avatar')
+    });
   }
 
-  changePassword() {
-    console.log('Modifier mon mot de passe');
-  }
-
-  logout() {
-    console.log('Se déconnecter');
-    this.router.navigate(['/']);
-  }
-
-  deleteAccount() {
-    console.log('Supprimer mon compte');
-  }
-
-  // Navigation vers la page d'accueil
-  goHome() {
-    this.router.navigate(['/home']);
-  }
+  openTalkSettings() { console.log('Paramètre des Talks'); }
+  changePassword() { console.log('Modifier mon mot de passe'); }
+  logout() { console.log('Se déconnecter'); this.router.navigate(['/']); }
+  deleteAccount() { console.log('Supprimer mon compte'); }
+  goHome() { this.router.navigate(['/home']); }
 }
+
