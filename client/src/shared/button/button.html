@@ -1,6 +1,8 @@
 <button
-  [attr.type]="type"
-  class="h-[50px] w-[200px] rounded-full text-white font-bold text-sm font-['JetBrains_Mono'] bg-gradient-to-r from-[#FF01AA] to-[#5F5FFF] shadow-[0_0_20px_1px_#5F5FFF] hover:opacity-90 transition"
+  [type]="type"
+  [class]="size === 'small' ? 'w-[200px] h-[50px] rounded-[25px] p-[2px] bg-gradient-to-r from-neon-purple/80 to-neon-pink/80 text-white font-jetbrains font-bold text-sm transition-all duration-300 hover:drop-shadow-[0_0_10px_rgba(255,1,170,0.8)] relative z-10' : 'w-[280px] h-[50px] rounded-[25px] p-[2px] bg-gradient-to-r from-neon-purple/80 to-neon-pink/80 text-white font-jetbrains font-bold text-sm transition-all duration-300 hover:drop-shadow-[0_0_10px_rgba(255,1,170,0.8)] relative z-10'"
 >
-  <ng-content></ng-content>
+  <div class="w-full h-full bg-black rounded-[23px] flex items-center justify-center hover:bg-transparent transition-colors duration-300">
+    <ng-content></ng-content>
+  </div>
 </button>
