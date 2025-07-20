@@ -83,6 +83,12 @@ export class Profile {
     this.isEditingStatus = false;
   }
 
+  getCurrentStatusIcon(): string {
+    const currentStatus = this.currentUser().status;
+    const statusOption = this.statusOptions.find(option => option.value === currentStatus);
+    return statusOption ? statusOption.icon : '/assets/image/online.svg';
+  }
+
   // Actions des boutons
   openTalkSettings() {
     console.log('Paramètre des Talks');
