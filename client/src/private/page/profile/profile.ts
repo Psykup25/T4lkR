@@ -80,7 +80,7 @@ export class Profile {
   }
 
   selectStatus(status: string) {
-    this.userService.updateUser({ status });
+    this.userService.updateStatus(status);
     this.isEditingStatus = false;
   }
 
