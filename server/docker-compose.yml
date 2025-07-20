@@ -1,0 +1,65 @@
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:7.0
+    container_name: t4lkr-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: t4lkr_admin
+      MONGO_INITDB_ROOT_PASSWORD: secure_password_123
+      MONGO_INITDB_DATABASE: t4lkr
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - t4lkr-network
+
+  # MongoDB Admin Interface (optionnel)
+  mongo-express:
+    image: mongo-express:latest
+    container_name: t4lkr-mongo-express
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: t4lkr_admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: secure_password_123
+      ME_CONFIG_MONGODB_URL: mongodb://t4lkr_admin:secure_password_123@mongodb:27017/
+      ME_CONFIG_BASICAUTH_USERNAME: admin
+      ME_CONFIG_BASICAUTH_PASSWORD: admin123
+    depends_on:
+      - mongodb
+    networks:
+      - t4lkr-network
+
+  # Backend Node.js API
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: t4lkr-backend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+      MONGODB_URI: mongodb://t4lkr_admin:secure_password_123@mongodb:27017/t4lkr?authSource=admin
+      JWT_SECRET: your-super-secret-jwt-key-for-t4lkr-2024
+      PORT: 3000
+      CLIENT_URL: http://localhost:4200
+    depends_on:
+      - mongodb
+    volumes:
+      - .:/app
+      - /app/node_modules
+    networks:
+      - t4lkr-network
+    command: npm run dev
+
+volumes:
+  mongodb_data:
+
+networks:
+  t4lkr-network:
+    driver: bridge
