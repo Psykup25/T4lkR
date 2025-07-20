@@ -65,4 +65,18 @@ export class Home {
       slider.scrollBy({ left: 150, behavior: 'smooth' });
     }
   }
+
+  scrollConversationLeft() {
+    const slider = document.getElementById('conversationSlider');
+    if (slider) {
+      slider.scrollBy({ left: -100, behavior: 'smooth' });
+    }
+  }
+
+  scrollConversationRight() {
+    const slider = document.getElementById('conversationSlider');
+    if (slider) {
+      slider.scrollBy({ left: 100, behavior: 'smooth' });
+    }
+  }
 }

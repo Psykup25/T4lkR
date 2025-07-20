@@ -88,14 +88,35 @@
     <section>
       <h2 class="text-neon-cyan text-lg font-bold font-jetbrains text-center mb-6">Mes Talks</h2>
       
-      <div class="flex gap-6 justify-center">
-        <app-conversation 
-          *ngFor="let conversation of conversations"
-          [username]="conversation.username"
-          [avatar]="conversation.avatar"
-          [status]="conversation.status"
-          [borderColor]="conversation.borderColor">
-        </app-conversation>
+      <div class="relative">
+        <!-- Container avec scroll horizontal -->
+        <div class="flex gap-6 overflow-x-auto pb-4 px-4 py-2 scrollbar-hide" id="conversationSlider">
+          <div class="flex-shrink-0" *ngFor="let conversation of conversations">
+            <app-conversation 
+              [username]="conversation.username"
+              [avatar]="conversation.avatar"
+              [status]="conversation.status"
+              [borderColor]="conversation.borderColor">
+            </app-conversation>
+          </div>
+        </div>
+        
+        <!-- Boutons de navigation -->
+        <button 
+          (click)="scrollConversationLeft()" 
+          class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-neon-cyan border border-neon-cyan rounded-full w-10 h-10 flex items-center justify-center transition-colors z-10">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+        </button>
+        
+        <button 
+          (click)="scrollConversationRight()" 
+          class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-neon-cyan border border-neon-cyan rounded-full w-10 h-10 flex items-center justify-center transition-colors z-10">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </button>
       </div>
     </section>
 
