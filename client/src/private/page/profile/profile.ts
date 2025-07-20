@@ -47,10 +47,11 @@ export class Profile {
   closeAvatarPopup() { this.isAvatarPopupOpen = false; }
 
   selectAvatar(avatarPath: string) {
-    // Met à jour l'avatar côté backend et frontend
-    const updateProfileResult = this.api.updateProfile({ avatar: avatarPath });
-    // Si updateProfile retourne void, effectuez la mise à jour localement
-    this.userService.setCurrentUser({ ...this.currentUser(), avatar: avatarPath });
+    // Met à jour l'avatar côté frontend et recharge immédiatement l'affichage
+    const user = this.userService.currentUser();
+    if (!user) return;
+    user.avatar = avatarPath;
+    this.userService.setCurrentUser({ ...user });
     this.closeAvatarPopup();
   }
 
@@ -92,13 +93,8 @@ export class Profile {
     const user = this.userService.currentUser();
     if (!user) return;
     user.avatar = emoji;
-    this.api.updateProfile({ avatar: emoji }).subscribe({
-      next: (updatedUser: any) => {
-        this.userService.setCurrentUser(updatedUser);
-        this.showAvatarPicker = false;
-      },
-      error: (err: any) => alert('Erreur lors de la mise à jour de l\'avatar')
-    });
+    this.userService.setCurrentUser({ ...user });
+    this.showAvatarPicker = false;
   }
 
   openTalkSettings() { console.log('Paramètre des Talks'); }
