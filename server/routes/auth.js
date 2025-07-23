@@ -4,6 +4,18 @@ const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 
+// Middleware d'authentification local
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  if (!token) return res.sendStatus(401);
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403);
+    req.user = user;
+    next();
+  });
+}
+
 router.post('/register', async (req, res) => {
   try {
     console.log('Register payload (backend):', req.body); // <-- Ajout debug
@@ -50,7 +62,7 @@ router.post('/login', async (req, res) => {
     if (!valid)
       return res.status(401).json({ message: 'Nom d\'utilisateur ou mot de passe incorrect.' });
 
-    // Générer un token JWT (optionnel)
+    // Générer un token JWT
     const token = jwt.sign(
       { id: user._id, username: user.username },
       process.env.JWT_SECRET,
@@ -70,6 +82,38 @@ router.post('/login', async (req, res) => {
     });
   } catch (err) {
     res.status(400).json({ message: 'Erreur lors de la connexion.', error: err.message });
+  }
+});
+
+router.put('/user/:id', authenticateToken, async (req, res) => {
+  console.log('PUT /user/:id called with id:', req.params.id);
+  console.log('ID dans le token JWT:', req.user.id);
+  try {
+    // Vérifie que l'utilisateur modifie ses propres données
+    if (req.user.id !== req.params.id) {
+      console.log('ID utilisateur non autorisé:', req.user.id, 'vs', req.params.id);
+      return res.status(403).json({ error: 'Accès refusé.' });
+    }
+    // Champs autorisés à la modification
+    const allowedUpdates = ['username', 'email', 'avatar'];
+    const updates = {};
+    allowedUpdates.forEach(field => {
+      if (req.body[field] !== undefined) updates[field] = req.body[field];
+    });
+    if (Object.keys(updates).length === 0) {
+      return res.status(400).json({ error: 'Aucune donnée à mettre à jour.' });
+    }
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.id,
+      { $set: updates },
+      { new: true }
+    );
+    console.log('Résultat de la mise à jour:', updatedUser);
+    if (!updatedUser) return res.status(404).json({ error: 'Utilisateur non trouvé.' });
+    res.status(200).json(updatedUser);
+  } catch (err) {
+    console.error('Erreur PUT /user/:id:', err);
+    res.status(500).json({ error: err.message });
   }
 });
 

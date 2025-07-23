@@ -1,4 +1,5 @@
 import { Injectable, signal } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,17 @@ export class UserService {
   });
 
   readonlyUser = this._currentUser.asReadonly();
+
+  constructor(private http: HttpClient) {}
+
+  updateUserOnBackend(id: string, userData: Partial<{ username: string; avatar: string; location: string; status: string; }>, token: string) {
+    const url = `http://localhost:3000/api/auth/user/${id}`;
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+    return this.http.put(url, userData, { headers });
+  }
 
   updateUser(userData: Partial<{ username: string; avatar: string; location: string; status: string; }>) {
     this._currentUser.update(current => ({ ...current, ...userData }));

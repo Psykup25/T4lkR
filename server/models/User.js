@@ -7,7 +7,7 @@ const UserSchema = new mongoose.Schema({
     unique: true,
     trim: true,
     minlength: [3, 'Le nom d\'utilisateur doit contenir au moins 3 caractères'],
-    maxlength: [50, 'Le nom d\'utilisateur ne peut pas dépasser 50 caractères']
+    maxlength: [20, 'Le nom d\'utilisateur ne peut pas dépasser 20 caractères']
   },
   email: {
     type: String,
@@ -20,7 +20,8 @@ const UserSchema = new mongoose.Schema({
   passwordHash: {
     type: String,
     required: [true, 'Le mot de passe est requis'],
-    minlength: [6, 'Le mot de passe doit contenir au moins 6 caractères']
+    minlength: [6, 'Le mot de passe doit contenir au moins 6 caractères'],
+    maxlength: [100, 'Le mot de passe ne peut pas dépasser 100 caractères'] 
   },
   avatar: {
     type: String,
@@ -28,7 +29,7 @@ const UserSchema = new mongoose.Schema({
   },
   location: {
     type: String,
-    maxlength: [100, 'La localisation ne peut pas dépasser 100 caractères'],
+    maxlength: [50, 'La localisation ne peut pas dépasser 50 caractères'],
     trim: true
   },
   status: {
@@ -76,8 +77,6 @@ const UserSchema = new mongoose.Schema({
 });
 
 // Index pour améliorer les performances
-UserSchema.index({ email: 1 });
-UserSchema.index({ username: 1 });
 UserSchema.index({ status: 1 });
 
 module.exports = mongoose.model('User', UserSchema);

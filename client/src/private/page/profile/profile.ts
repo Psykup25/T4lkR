@@ -39,20 +39,30 @@ export class Profile {
     { value: 'Anonyme', label: 'Anonyme', icon: '/assets/image/Anon.svg' }
   ];
 
-  avatarEmojis = [
-    '👤','👽','🤖','🐻','🐱','🐶','🦊','🐸','🐵','🦄','🐼','🐧','🐯','🐰','🦁','🐨','🐙','🐢','🐲','🧙‍♂️','🧑‍🚀','🧑‍🎤','🧑‍💻','🧑‍🏫','🧑‍🎨','🧑‍🚒','🧑‍✈️'
-  ];
-
   openAvatarPopup() { this.isAvatarPopupOpen = true; }
   closeAvatarPopup() { this.isAvatarPopupOpen = false; }
 
   selectAvatar(avatarPath: string) {
-    // Met à jour l'avatar côté frontend et recharge immédiatement l'affichage
     const user = this.userService.currentUser();
-    if (!user) return;
-    user.avatar = avatarPath;
-    this.userService.setCurrentUser({ ...user });
-    this.closeAvatarPopup();
+    const token = localStorage.getItem('token');
+    if (user && token) {
+      this.userService.updateUserOnBackend(user.id, { avatar: avatarPath }, token).subscribe(
+        response => {
+          this.userService.updateAvatar(avatarPath);
+          this.userService.setCurrentUser({ ...user, avatar: avatarPath });
+          this.closeAvatarPopup();
+        },
+        error => {
+          console.error('Erreur lors de la mise à jour de l\'avatar:', error);
+        }
+      );
+    } else {
+      // Fallback local update if not authenticated
+      if (!user) return;
+      user.avatar = avatarPath;
+      this.userService.setCurrentUser({ ...user });
+      this.closeAvatarPopup();
+    }
   }
 
   startEditLocation() {
