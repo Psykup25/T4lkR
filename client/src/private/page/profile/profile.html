@@ -1,26 +1,26 @@
 <app-background>
   <div class="container mx-auto px-4 py-8 max-w-md">
     
-    <!-- Logo principal en haut (plus gros) -->
+    <!-- Logo principal en haut -->
     <header class="flex justify-center mb-6">
       <img src="/assets/image/logo.svg" alt="T4lkR Logo" class="h-28">
     </header>
 
     <!-- Profil utilisateur avec avatar et informations alignés -->
     <div class="flex items-start gap-6 mb-8">
-      <!-- Avatar à gauche (plus gros) avec statut -->
+      <!-- Avatar à gauche avec statut -->
       <div class="flex-shrink-0 relative overflow-visible">
         <div class="w-32 h-32 p-[3px] bg-gradient-to-r from-neon-purple/80 to-neon-pink/80 rounded-full cursor-pointer transition-transform duration-200 hover:scale-105" (click)="openAvatarPopup()">
           <div class="w-full h-full rounded-full bg-black flex items-center justify-center text-5xl overflow-hidden">
-            <img *ngIf="currentUser().avatar !== '👤'" 
+            <img *ngIf="currentUser().avatar" 
                  [src]="currentUser().avatar" 
                  [alt]="currentUser().username"
                  class="w-full h-full object-cover rounded-full">
-            <span *ngIf="currentUser().avatar === '👤'">{{ currentUser().avatar }}</span>
+            
           </div>
         </div>
         
-        <!-- Statut plus en bas à droite de l'avatar avec texte -->
+        <!-- Statut en bas à droite de l'avatar avec texte -->
         <div class="absolute bottom-0 right-0 flex items-center gap-1 group" style="transform: translateX(45px);">
           <div class="bg-black rounded-full p-1 cursor-pointer border border-neon-cyan/50" (click)="startEditStatus()">
             <img [src]="getCurrentStatusIcon()" [alt]="currentUser().status" class="w-5 h-5">
@@ -29,14 +29,14 @@
         </div>
       </div>
 
-      <!-- Informations utilisateur à droite (textes plus petits) -->
+      <!-- Informations utilisateur à droite -->
       <div class="flex-1 space-y-2">
         <h1 class="text-neon-cyan text-lg font-bold font-jetbrains">{{ currentUser().username }}</h1>
         
         <!-- Localisation avec icône edit -->
         <div class="flex items-center gap-2">
           <div *ngIf="!isEditingLocation" class="flex-1">
-            <p class="text-white font-jetbrains text-sm">{{ currentUser().location }}</p>
+            <p class="text-white font-jetbrains text-sm">{{ currentUser().location || '' }}</p>
           </div>
           
           <div *ngIf="isEditingLocation" class="flex items-center gap-2 flex-1">
@@ -68,7 +68,7 @@
       </div>
     </div>
 
-    <!-- Icône maison pour retour accueil (plus grosse) -->
+    <!-- Icône maison pour retour accueil -->
     <div class="flex justify-center mb-8">
       <button (click)="goHome()" class="text-neon-cyan transition-all duration-300 hover:scale-105 hover:drop-shadow-[0_0_10px_rgba(255,1,170,0.8)]">
         <svg class="w-16 h-16" fill="currentColor" viewBox="0 0 24 24">
@@ -113,16 +113,8 @@
               <img [src]="avatar" [alt]="'Avatar'" class="w-full h-full object-cover rounded-full">
             </div>
           </div>
-          
-          <!-- Option pour garder l'emoji par défaut -->
-          <div class="w-16 h-16 p-[2px] bg-gradient-to-r from-neon-purple/80 to-neon-pink/80 rounded-full cursor-pointer transition-transform duration-200 hover:scale-110"
-               (click)="selectAvatar('👤')">
-            <div class="w-full h-full rounded-full bg-black flex items-center justify-center text-2xl">
-              👤
-            </div>
-          </div>
         </div>
-        
+            
         <!-- Bouton fermer -->
         <div class="flex justify-center">
           <button (click)="closeAvatarPopup()" class="px-6 py-2 border border-neon-cyan text-neon-cyan rounded-lg hover:bg-neon-cyan hover:text-black transition-colors font-jetbrains">

@@ -25,6 +25,40 @@ export class UserService {
     return this.http.put(url, userData, { headers });
   }
 
+  updateStatusOnBackend(id: string, status: string, token: string) {
+    const url = `http://localhost:3000/api/auth/user/${id}`;
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+    // Get the current user and update the status
+    const user = this.currentUser();
+    const userData = {
+      username: user?.username || '',
+      avatar: user?.avatar || '',
+      location: user?.location || '',
+      status: status
+    };
+    return this.http.put(url, userData, { headers });
+  }
+
+  updateLocationOnBackend(id: string, location: string, token: string) {
+    const url = `http://localhost:3000/api/auth/user/${id}`;
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+    // Get the current user and update the location
+    const user = this.currentUser();
+    const userData = {
+      username: user?.username || '',
+      avatar: user?.avatar || '',
+      status: user?.status || '',
+      location: location
+    };
+    return this.http.put(url, userData, { headers });
+  }
+
   updateUser(userData: Partial<{ username: string; avatar: string; location: string; status: string; }>) {
     this._currentUser.update(current => ({ ...current, ...userData }));
   }
@@ -44,8 +78,11 @@ export class UserService {
   private user: any = null;
 
   setCurrentUser(user: any) {
-    this.user = user;
-    localStorage.setItem('user', JSON.stringify(user));
+    // Merge avec l'état courant pour ne jamais perdre de champ (location, etc.)
+    const merged = { ...this._currentUser(), ...user };
+    this.user = merged;
+    this._currentUser.set(merged);
+    localStorage.setItem('user', JSON.stringify(merged));
   }
 
   currentUser() {

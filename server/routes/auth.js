@@ -95,7 +95,7 @@ router.put('/user/:id', authenticateToken, async (req, res) => {
       return res.status(403).json({ error: 'Accès refusé.' });
     }
     // Champs autorisés à la modification
-    const allowedUpdates = ['username', 'email', 'avatar'];
+    const allowedUpdates = ['username', 'email', 'avatar', 'location', 'status'];
     const updates = {};
     allowedUpdates.forEach(field => {
       if (req.body[field] !== undefined) updates[field] = req.body[field];

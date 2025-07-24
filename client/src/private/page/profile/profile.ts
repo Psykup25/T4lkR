@@ -1,4 +1,4 @@
-import { Component, computed } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../../shared/services/user.service';
@@ -14,10 +14,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './profile.html'
 })
 export class Profile {
-  constructor(private router: Router, private userService: UserService, private api: ApiService) {}
-
-  currentUser = computed(() => this.userService.currentUser());
-
+  currentUser: any;
   isEditingLocation = false;
   tempLocation = '';
   isAvatarPopupOpen = false;
@@ -39,6 +36,15 @@ export class Profile {
     { value: 'Anonyme', label: 'Anonyme', icon: '/assets/image/Anon.svg' }
   ];
 
+  constructor(private router: Router, private userService: UserService, private api: ApiService) {
+    // Initialise le signal avec l'utilisateur connecté
+    this.currentUser = this.userService.readonlyUser;
+    const user = this.userService.currentUser();
+    if (user) {
+      this.userService.setCurrentUser(user);
+    }
+  }
+
   openAvatarPopup() { this.isAvatarPopupOpen = true; }
   closeAvatarPopup() { this.isAvatarPopupOpen = false; }
 
@@ -56,12 +62,6 @@ export class Profile {
           console.error('Erreur lors de la mise à jour de l\'avatar:', error);
         }
       );
-    } else {
-      // Fallback local update if not authenticated
-      if (!user) return;
-      user.avatar = avatarPath;
-      this.userService.setCurrentUser({ ...user });
-      this.closeAvatarPopup();
     }
   }
 
@@ -71,9 +71,20 @@ export class Profile {
   }
 
   saveLocation() {
-    if (this.tempLocation.trim() && this.tempLocation.trim().length <= 40) {
-      this.userService.updateLocation(this.tempLocation.trim());
-      this.isEditingLocation = false;
+    const user = this.userService.currentUser();
+    const token = localStorage.getItem('token');
+    if (this.tempLocation.trim() && this.tempLocation.trim().length <= 40 && user && token) {
+      this.userService.updateLocationOnBackend(user.id, this.tempLocation.trim(), token).subscribe(
+        (response: any) => {
+          this.userService.updateLocation(response.location);
+          this.userService.setCurrentUser(response);
+          this.isEditingLocation = false;
+        },
+        error => {
+          console.error('Erreur lors de la mise à jour de la localisation:', error);
+          this.isEditingLocation = false;
+        }
+      );
     } else if (this.tempLocation.trim().length > 40) {
       console.warn('La localisation ne peut pas dépasser 40 caractères');
     } else {
@@ -88,8 +99,21 @@ export class Profile {
 
   startEditStatus() { this.isEditingStatus = true; }
   selectStatus(status: string) {
-    this.userService.updateStatus(status);
-    this.isEditingStatus = false;
+    const user = this.userService.currentUser();
+    const token = localStorage.getItem('token');
+    if (user && token) {
+      this.userService.updateStatusOnBackend(user.id, status, token).subscribe(
+        response => {
+          this.userService.updateStatus(status);
+          this.userService.setCurrentUser({ ...user, status });
+          this.isEditingStatus = false;
+        },
+        error => {
+          console.error('Erreur lors de la mise à jour du statut:', error);
+          this.isEditingStatus = false;
+        }
+      );
+    }
   }
   cancelEditStatus() { this.isEditingStatus = false; }
 
