@@ -110,7 +110,9 @@ router.put('/user/:id', authenticateToken, async (req, res) => {
     );
     console.log('Résultat de la mise à jour:', updatedUser);
     if (!updatedUser) return res.status(404).json({ error: 'Utilisateur non trouvé.' });
-    res.status(200).json(updatedUser);
+    // Filtrer les champs sensibles
+    const { passwordHash, __v, ...safeUser } = updatedUser.toObject();
+    res.status(200).json(safeUser);
   } catch (err) {
     console.error('Erreur PUT /user/:id:', err);
     res.status(500).json({ error: err.message });
