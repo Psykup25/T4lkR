@@ -1,3 +1,4 @@
+// ...existing code...
 import { Injectable, signal } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -5,6 +6,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   providedIn: 'root'
 })
 export class UserService {
+  getUserFromBackend(id: string, token: string) {
+    const url = `http://localhost:3000/api/auth/user/${id}`;
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+    return this.http.get(url, { headers });
+  }
   private _currentUser = signal({
     username: 'Jerome_Dev',
     avatar: '👤',

@@ -15,7 +15,7 @@ const TalkZoneSchema = new mongoose.Schema({
   },
   description: {
     type: String,
-    maxlength: [500, 'La description ne peut pas dépasser 500 caractères'],
+    maxlength: [200, 'La description ne peut pas dépasser 200 caractères'],
     trim: true
   },
   imageUrl: {

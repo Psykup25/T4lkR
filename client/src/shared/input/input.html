@@ -4,8 +4,8 @@
     <input
       [type]="type"
       [placeholder]="placeholder"
-      [(ngModel)]="value"
-      (ngModelChange)="onValueChange($event)"
+      [value]="value"
+      (input)="onInput($event)"
       [attr.autocomplete]="autocomplete ? autocomplete : (type === 'password' ? 'current-password' : (type === 'email' ? 'email' : (type === 'text' ? 'username' : null)))"
       class="w-full px-3 py-2 rounded-[8px] bg-black text-white border-none outline-none text-center"
     />

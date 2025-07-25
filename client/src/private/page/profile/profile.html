@@ -35,16 +35,20 @@
         
         <!-- Localisation avec icône edit -->
         <div class="flex items-center gap-2">
-          <div *ngIf="!isEditingLocation" class="flex-1">
+          <div *ngIf="!isEditingLocation()" class="flex-1">
             <p class="text-white font-jetbrains text-sm">{{ currentUser().location || '' }}</p>
           </div>
-          
-          <div *ngIf="isEditingLocation" class="flex items-center gap-2 flex-1">
+          <div *ngIf="isEditingLocation()" class="flex items-center gap-2 flex-1">
+            <label for="location-input" class="sr-only">Localisation</label>
             <input 
-              [(ngModel)]="tempLocation"
+              id="location-input"
+              name="location"
+              [value]="tempLocation()"
+              (input)="onTempLocationInput($event)"
               maxlength="40"
               class="bg-black border border-neon-cyan rounded px-2 py-1 text-white font-jetbrains text-sm flex-1"
               placeholder="Votre localisation (max 40 caractères)"
+              autocomplete="address-level2"
               (keyup.enter)="saveLocation()"
               (keyup.escape)="cancelEditLocation()">
             <button (click)="saveLocation()" class="text-green-400 hover:text-green-300 transition-colors">
@@ -58,8 +62,7 @@
               </svg>
             </button>
           </div>
-          
-          <button *ngIf="!isEditingLocation" (click)="startEditLocation()" class="text-neon-cyan hover:text-neon-cyan/80 transition-colors">
+          <button *ngIf="!isEditingLocation()" (click)="startEditLocation()" class="text-neon-cyan hover:text-neon-cyan/80 transition-colors">
             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
             </svg>
@@ -99,7 +102,7 @@
   </div>
 
   <!-- Popup de sélection d'avatar -->
-  <div *ngIf="isAvatarPopupOpen" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" (click)="closeAvatarPopup()">
+  <div *ngIf="isAvatarPopupOpen()" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" (click)="closeAvatarPopup()">
     <div class="p-[2px] bg-gradient-to-r from-neon-purple/80 to-neon-pink/80 rounded-lg max-w-sm w-full mx-4" (click)="$event.stopPropagation()">
       <div class="bg-black rounded-lg p-6">
         <h3 class="text-neon-cyan text-lg font-bold font-jetbrains text-center mb-6">Choisis un avatar</h3>
@@ -126,7 +129,7 @@
   </div>
 
   <!-- Popup de sélection de statut -->
-  <div *ngIf="isEditingStatus" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" (click)="cancelEditStatus()">
+  <div *ngIf="isEditingStatus()" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" (click)="cancelEditStatus()">
     <div class="p-[2px] bg-gradient-to-r from-neon-purple/80 to-neon-pink/80 rounded-lg max-w-sm w-full mx-4" (click)="$event.stopPropagation()">
       <div class="bg-black rounded-lg p-6">
         <h3 class="text-neon-cyan text-lg font-bold font-jetbrains text-center mb-6">Choisir un statut</h3>

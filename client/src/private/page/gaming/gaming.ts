@@ -12,12 +12,15 @@ import { Talkzone } from '../../../shared/talkzone/talkzone';
   templateUrl: './gaming.html'
 })
 export class Gaming {
+  goHome() {
+    this.router.navigate(['/home']);
+  }
   
   constructor(private router: Router) {}
 
   @ViewChild('searchInput') searchInput!: ElementRef;
 
-  isSearchOpen = false;
+  isSearchOpen = signal(false);
   searchTerm = signal(''); // Utiliser un signal pour la réactivité
 
   allTalkzones = [
@@ -47,15 +50,10 @@ export class Gaming {
     );
   });
 
-  goHome() {
-    this.router.navigate(['/home']);
-  }
-
   toggleSearch() {
-    this.isSearchOpen = !this.isSearchOpen;
-    if (this.isSearchOpen) {
+    this.isSearchOpen.set(!this.isSearchOpen());
+    if (this.isSearchOpen()) {
       this.searchTerm.set('');
-      // Focus l'input après que l'animation s'affiche
       setTimeout(() => {
         if (this.searchInput) {
           this.searchInput.nativeElement.focus();
@@ -74,7 +72,7 @@ export class Gaming {
 
   clearSearch() {
     this.searchTerm.set('');
-    this.isSearchOpen = false;
+    this.isSearchOpen.set(false);
   }
 
   // Getter pour la compatibilité avec ngModel

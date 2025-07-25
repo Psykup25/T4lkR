@@ -17,7 +17,7 @@ export class Sport {
 
   @ViewChild('searchInput') searchInput!: ElementRef;
 
-  isSearchOpen = false;
+  isSearchOpen = signal(false);
   searchTerm = signal('');
 
   allTalkzones = [
@@ -51,8 +51,8 @@ export class Sport {
   }
 
   toggleSearch() {
-    this.isSearchOpen = !this.isSearchOpen;
-    if (this.isSearchOpen) {
+    this.isSearchOpen.set(!this.isSearchOpen());
+    if (this.isSearchOpen()) {
       this.searchTerm.set('');
       setTimeout(() => {
         if (this.searchInput) {
@@ -71,7 +71,7 @@ export class Sport {
 
   clearSearch() {
     this.searchTerm.set('');
-    this.isSearchOpen = false;
+        this.isSearchOpen.set(false);
   }
 
   get searchTermValue() {

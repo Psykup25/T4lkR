@@ -4,6 +4,58 @@ const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 
+// Changement de mot de passe
+router.post('/user/:id/change-password', authenticateToken, async (req, res) => {
+  console.log('API POST /user/:id/change-password appelée avec:', req.params, req.body);
+  const { id } = req.params;
+  const { currentPassword, newPassword } = req.body;
+  try {
+    // Vérifie que l'utilisateur modifie son propre mot de passe
+    if (req.user.id !== id) {
+      return res.status(403).json({ message: 'Accès refusé.' });
+    }
+    const user = await User.findById(id);
+    if (!user) return res.status(404).json({ message: 'Utilisateur non trouvé.' });
+    // Vérifie le mot de passe actuel
+    const isMatch = await bcrypt.compare(currentPassword, user.passwordHash);
+    if (!isMatch) return res.status(400).json({ message: 'Mot de passe actuel incorrect.' });
+    // Met à jour le mot de passe
+    user.passwordHash = await bcrypt.hash(newPassword, parseInt(process.env.BCRYPT_ROUNDS) || 12);
+    await user.save();
+    res.json({ message: 'Mot de passe changé avec succès.' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
+// Middleware d'authentification local
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  if (!token) return res.sendStatus(401);
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403);
+    req.user = user;
+    next();
+  });
+}
+
+// GET user by id (pour profil frontend)
+router.get('/user/:id', authenticateToken, async (req, res) => {
+  try {
+    if (req.user.id !== req.params.id) {
+      return res.status(403).json({ error: 'Accès refusé.' });
+    }
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ error: 'Utilisateur non trouvé.' });
+    const { passwordHash, __v, ...safeUser } = user.toObject();
+    res.status(200).json(safeUser);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Middleware d'authentification local
 function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization'];

@@ -11,17 +11,19 @@
         label="Nom d'utilisateur"
         placeholder="Nom d'utilisateur"
         type="text"
-        [(value)]="username"
+        [value]="username()"
+        (valueChange)="username.set($event)"
         autocomplete="username">
       </app-input>
       <app-input
         label="Mot de passe"
         placeholder="Mot de passe"
         type="password"
-        [(value)]="password"
+        [value]="password()"
+        (valueChange)="password.set($event)"
         autocomplete="current-password">
       </app-input>
-      <div *ngIf="error" class="text-red-500 text-center font-bold">{{ error }}</div>
+      <div *ngIf="error()" class="text-red-500 text-center font-bold">{{ error() }}</div>
       <div class="flex  w-full">
         <app-button type="submit" class="max-w-[200px] w-full text-center ml-4">Se connecter</app-button>
       </div>

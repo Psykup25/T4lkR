@@ -11,7 +11,8 @@
       <app-input 
         label="Nom d'utilisateur" 
         placeholder="Nom d'utilisateur" 
-        [(value)]="username"
+        [value]="username()"
+        (valueChange)="username.set($event)"
         autocomplete="username">
       </app-input>
 
@@ -20,7 +21,8 @@
         label="Adresse mail" 
         placeholder="Email" 
         type="email"
-        [(value)]="email"
+        [value]="email()"
+        (valueChange)="email.set($event)"
         autocomplete="email">
       </app-input>
 
@@ -29,7 +31,8 @@
         label="Mot de passe" 
         placeholder="Mot de passe" 
         type="password"
-        [(value)]="password"
+        [value]="password()"
+        (valueChange)="password.set($event)"
         autocomplete="new-password">
       </app-input>
 
@@ -37,7 +40,8 @@
         label="Confirmer le mot de passe" 
         placeholder="Confirmer le mot de passe" 
         type="password"
-        [(value)]="confirmPassword"
+        [value]="confirmPassword()"
+        (valueChange)="confirmPassword.set($event)"
         autocomplete="new-password">
       </app-input>
 
@@ -80,6 +84,8 @@
           </div>
         </div>
       </div>
+      <div *ngIf="error()" class="text-red-400 text-center mt-2">{{ error() }}</div>
+      <div *ngIf="success()" class="text-green-400 text-center mt-2">{{ success() }}</div>
 
       <!-- Sélection du genre -->
       <div class="flex flex-col items-center w-full">
@@ -88,46 +94,46 @@
           <!-- Option Male -->
           <div class="flex flex-col items-center cursor-pointer group"
                (click)="selectGender('male')"
-               [class.opacity-100]="selectedGender === 'Homme'"
-               [class.opacity-60]="selectedGender !== 'Homme'">
+               [class.opacity-100]="selectedGender() === 'Homme'"
+               [class.opacity-60]="selectedGender() !== 'Homme'">
             <div class="w-[60px] h-[60px] rounded-[15px] p-[2px] transition-all duration-300"
-                 [class]="selectedGender === 'male' ? 'bg-gradient-to-r from-neon-cyan to-neon-cyan shadow-[0_0_20px_4px_rgba(0,255,204,0.6)]' : 'bg-gradient-to-r from-neon-purple/80 to-neon-pink/80 shadow-neon-purple group-hover:shadow-[0_0_20px_4px_rgba(95,95,255,0.6)]'">
+                 [class]="selectedGender() === 'male' ? 'bg-gradient-to-r from-neon-cyan to-neon-cyan shadow-[0_0_20px_4px_rgba(0,255,204,0.6)]' : 'bg-gradient-to-r from-neon-purple/80 to-neon-pink/80 shadow-neon-purple group-hover:shadow-[0_0_20px_4px_rgba(95,95,255,0.6)]'">
               <div class="w-full h-full rounded-[13px] bg-black flex items-center justify-center">
                 <img src="/assets/image/Male.svg" alt="Homme" class="w-[40px] h-[40px]" />
               </div>
             </div>
             <span class="text-xs font-jetbrains mt-2 transition-colors duration-300"
-                  [class]="selectedGender === 'Homme' ? 'text-neon-cyan font-bold' : 'text-neon-cyan'">Homme</span>
+                  [class]="selectedGender() === 'Homme' ? 'text-neon-cyan font-bold' : 'text-neon-cyan'">Homme</span>
           </div>
 
           <!-- Option Female -->
           <div class="flex flex-col items-center cursor-pointer group"
                (click)="selectGender('female')"
-               [class.opacity-100]="selectedGender === 'Femme'"
-               [class.opacity-60]="selectedGender !== 'Femme'">
+               [class.opacity-100]="selectedGender() === 'Femme'"
+               [class.opacity-60]="selectedGender() !== 'Femme'">
             <div class="w-[60px] h-[60px] rounded-[15px] p-[2px] transition-all duration-300"
-                 [class]="selectedGender === 'female' ? 'bg-gradient-to-r from-neon-cyan to-neon-cyan shadow-[0_0_20px_4px_rgba(0,255,204,0.6)]' : 'bg-gradient-to-r from-neon-purple/80 to-neon-pink/80 shadow-neon-purple group-hover:shadow-[0_0_20px_4px_rgba(95,95,255,0.6)]'">
+                 [class]="selectedGender() === 'female' ? 'bg-gradient-to-r from-neon-cyan to-neon-cyan shadow-[0_0_20px_4px_rgba(0,255,204,0.6)]' : 'bg-gradient-to-r from-neon-purple/80 to-neon-pink/80 shadow-neon-purple group-hover:shadow-[0_0_20px_4px_rgba(95,95,255,0.6)]'">
               <div class="w-full h-full rounded-[13px] bg-black flex items-center justify-center">
                 <img src="/assets/image/Female.svg" alt="Femme" class="w-[40px] h-[40px]" />
               </div>
             </div>
             <span class="text-xs font-jetbrains mt-2 transition-colors duration-300"
-                  [class]="selectedGender === 'Femme' ? 'text-neon-cyan font-bold' : 'text-neon-cyan'">Femme</span>
+                  [class]="selectedGender() === 'Femme' ? 'text-neon-cyan font-bold' : 'text-neon-cyan'">Femme</span>
           </div>
 
           <!-- Option Other -->
           <div class="flex flex-col items-center cursor-pointer group"
                (click)="selectGender('other')"
-               [class.opacity-100]="selectedGender === 'Autre'"
-               [class.opacity-60]="selectedGender !== 'Autre'">
+               [class.opacity-100]="selectedGender() === 'Autre'"
+               [class.opacity-60]="selectedGender() !== 'Autre'">
             <div class="w-[60px] h-[60px] rounded-[15px] p-[2px] transition-all duration-300"
-                 [class]="selectedGender === 'other' ? 'bg-gradient-to-r from-neon-cyan to-neon-cyan shadow-[0_0_20px_4px_rgba(0,255,204,0.6)]' : 'bg-gradient-to-r from-neon-purple/80 to-neon-pink/80 shadow-neon-purple group-hover:shadow-[0_0_20px_4px_rgba(95,95,255,0.6)]'">
+                 [class]="selectedGender() === 'other' ? 'bg-gradient-to-r from-neon-cyan to-neon-cyan shadow-[0_0_20px_4px_rgba(0,255,204,0.6)]' : 'bg-gradient-to-r from-neon-purple/80 to-neon-pink/80 shadow-neon-purple group-hover:shadow-[0_0_20px_4px_rgba(95,95,255,0.6)]'">
               <div class="w-full h-full rounded-[13px] bg-black flex items-center justify-center">
                 <img src="/assets/image/Component 2.svg" alt="Autre" class="w-[40px] h-[40px]" />
               </div>
             </div>
             <span class="text-xs font-jetbrains mt-2 transition-colors duration-300"
-                  [class]="selectedGender === 'Autre' ? 'text-neon-cyan font-bold' : 'text-neon-cyan'">Autre</span>
+                  [class]="selectedGender() === 'Autre' ? 'text-neon-cyan font-bold' : 'text-neon-cyan'">Autre</span>
           </div>
         </div>
       </div>

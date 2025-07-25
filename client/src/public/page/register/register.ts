@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Background } from '../../../shared/background/background';
@@ -13,15 +13,17 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './register.html'
 })
 export class Register {
-  username: any;
-  email: any;
-  password: any;
-  confirmPassword: any;
+  username = signal('');
+  email = signal('');
+  password = signal('');
+  confirmPassword = signal('');
   birthDay: any;
   birthMonth: any;
   birthYear: any;
-  selectedGender: string = '';
-  acceptedTerms: boolean = false;
+  selectedGender = signal('');
+  acceptedTerms = signal(false);
+  error = signal('');
+  success = signal('');
 
   constructor(private router: Router, private api: ApiService) {}
 
@@ -58,19 +60,18 @@ export class Register {
   }
 
   selectGender(gender: string) {
-    // Si déjà sélectionné, on désélectionne
     if (
-      (gender === 'male' && this.selectedGender === 'Homme') ||
-      (gender === 'female' && this.selectedGender === 'Femme') ||
-      (gender === 'other' && this.selectedGender === 'Autre')
+      (gender === 'male' && this.selectedGender() === 'Homme') ||
+      (gender === 'female' && this.selectedGender() === 'Femme') ||
+      (gender === 'other' && this.selectedGender() === 'Autre')
     ) {
-      this.selectedGender = '';
+      this.selectedGender.set('');
     } else if (gender === 'male') {
-      this.selectedGender = 'Homme';
+      this.selectedGender.set('Homme');
     } else if (gender === 'female') {
-      this.selectedGender = 'Femme';
+      this.selectedGender.set('Femme');
     } else {
-      this.selectedGender = 'Autre';
+      this.selectedGender.set('Autre');
     }
   }
 
@@ -79,40 +80,40 @@ export class Register {
   }
 
   createAccount() {
-    // Assemble la date de naissance
+    this.error.set('');
+    this.success.set('');
     const birthDate = this.birthYear && this.birthMonth && this.birthDay
       ? `${this.birthYear}-${String(this.birthMonth).padStart(2, '0')}-${String(this.birthDay).padStart(2, '0')}`
       : '';
 
     const data = {
-      username: this.username,
-      email: this.email,
-      password: this.password,
+      username: this.username(),
+      email: this.email(),
+      password: this.password(),
       birthDate,
-      gender: this.selectedGender
+      gender: this.selectedGender()
     };
-    console.log('Register payload:', data);
 
-    // Vérification simple côté front
     if (!data.username || !data.email || !data.password || !data.birthDate || !data.gender) {
-      alert('Tous les champs sont obligatoires.');
+      this.error.set('Tous les champs sont obligatoires.');
       return;
     }
-    if (this.password !== this.confirmPassword) {
-      alert('Les mots de passe ne correspondent pas.');
+    if (this.password() !== this.confirmPassword()) {
+      this.error.set('Les mots de passe ne correspondent pas.');
       return;
     }
-    if (!this.acceptedTerms) {
-      alert('Vous devez accepter les CGU et la politique de confidentialité.');
+    if (!this.acceptedTerms()) {
+      this.error.set('Vous devez accepter les CGU et la politique de confidentialité.');
       return;
     }
 
     this.api.register(data).subscribe({
-      next: () => this.router.navigate(['/login']),
+      next: () => {
+        this.success.set('Compte créé avec succès !');
+        setTimeout(() => this.router.navigate(['/login']), 1000);
+      },
       error: err => {
-        // Affiche le message d'erreur du backend pour comprendre le 400
-        alert(err.error?.message || 'Erreur lors de la création du compte');
-        console.error('Erreur backend:', err.error);
+        this.error.set(err.error?.message || 'Erreur lors de la création du compte');
       }
     });
   }

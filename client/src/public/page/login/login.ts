@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from '../../../shared/services/api.service';
 import { UserService } from '../../../shared/services/user.service';
@@ -16,9 +16,9 @@ import { Background } from '../../../shared/background/background';
   templateUrl: './login.html'
 })
 export class Login {
-  username: string = '';
-  password: string = '';
-  error: string = '';
+  username = signal('');
+  password = signal('');
+  error = signal('');
 
   constructor(
     private router: Router,
@@ -28,20 +28,18 @@ export class Login {
 
   login() {
     const data = {
-      username: this.username,
-      password: this.password
+      username: this.username(),
+      password: this.password()
     };
 
     this.api.login(data).subscribe({
       next: (res: any) => {
-        // Stocke le token et l'utilisateur
         localStorage.setItem('token', res.token);
         this.userService.setCurrentUser(res.user);
-        // Redirige vers la page home
         this.router.navigate(['/home']);
       },
       error: err => {
-        this.error = err.error?.message || 'Erreur lors de la connexion';
+        this.error.set(err.error?.message || 'Erreur lors de la connexion');
       }
     });
   }

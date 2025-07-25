@@ -14,7 +14,10 @@ import { CommonModule } from '@angular/common';
   templateUrl: './home.html'
 })
 export class Home {
-  constructor(private router: Router, private userService: UserService) {}
+  constructor(router, userService) {
+    this.router = router;
+    this.userService = userService;
+  }
 
   currentUser = computed(() => ({
     username: this.userService.currentUser().username,
@@ -43,7 +46,7 @@ export class Home {
     {
       username: 'AI_Assistant',
       avatar: '🤖',
-      status: 'online' as 'online' | 'away' | 'offline',
+      status: 'online',
       borderColor: 'border-neon-pink'
     }
   ];

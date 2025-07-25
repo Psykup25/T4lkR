@@ -3,8 +3,6 @@ const router = express.Router();
 const User = require('../models/User');
 const auth = require('../middleware/auth');
 
-// ...existing code...
-
 router.patch('/profile', auth, async (req, res) => {
   try {
     const userId = req.user.id;
