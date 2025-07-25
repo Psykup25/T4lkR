@@ -12,9 +12,9 @@
       <div class="flex-shrink-0 relative overflow-visible">
         <div class="w-32 h-32 p-[3px] bg-gradient-to-r from-neon-purple/80 to-neon-pink/80 rounded-full cursor-pointer transition-transform duration-200 hover:scale-105" (click)="openAvatarPopup()">
           <div class="w-full h-full rounded-full bg-black flex items-center justify-center text-5xl overflow-hidden">
-            <img *ngIf="currentUser().avatar" 
-                 [src]="currentUser().avatar" 
-                 [alt]="currentUser().username"
+            <img *ngIf="readonlyUser().avatar" 
+                 [src]="readonlyUser().avatar" 
+                 [alt]="readonlyUser().username"
                  class="w-full h-full object-cover rounded-full">
             
           </div>
@@ -23,20 +23,20 @@
         <!-- Statut en bas à droite de l'avatar avec texte -->
         <div class="absolute bottom-0 right-0 flex items-center gap-1 group" style="transform: translateX(45px);">
           <div class="bg-black rounded-full p-1 cursor-pointer border border-neon-cyan/50" (click)="startEditStatus()">
-            <img [src]="getCurrentStatusIcon()" [alt]="currentUser().status" class="w-5 h-5">
+            <img [src]="getCurrentStatusIcon()" [alt]="readonlyUser().status" class="w-5 h-5">
           </div>
-          <p class="text-neon-cyan font-jetbrains text-xs cursor-pointer whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300" (click)="startEditStatus()">{{ currentUser().status }}</p>
+          <p class="text-neon-cyan font-jetbrains text-xs cursor-pointer whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300" (click)="startEditStatus()">{{ readonlyUser().status }}</p>
         </div>
       </div>
 
       <!-- Informations utilisateur à droite -->
       <div class="flex-1 space-y-2">
-        <h1 class="text-neon-cyan text-lg font-bold font-jetbrains">{{ currentUser().username }}</h1>
+<h1 class="text-neon-cyan text-lg font-bold font-jetbrains">{{ readonlyUser().username }}</h1>
         
         <!-- Localisation avec icône edit -->
         <div class="flex items-center gap-2">
           <div *ngIf="!isEditingLocation()" class="flex-1">
-            <p class="text-white font-jetbrains text-sm">{{ currentUser().location || '' }}</p>
+<p class="text-white font-jetbrains text-sm">{{ readonlyUser().location || '' }}</p>
           </div>
           <div *ngIf="isEditingLocation()" class="flex items-center gap-2 flex-1">
             <label for="location-input" class="sr-only">Localisation</label>

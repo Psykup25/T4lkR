@@ -12,14 +12,14 @@
       <div class="flex items-center gap-4">
         <div class="w-12 h-12 rounded-full p-[2px] bg-gradient-to-r from-neon-purple/80 to-neon-pink/80 flex items-center justify-center text-lg overflow-hidden cursor-pointer transition-transform duration-200 hover:scale-105" (click)="navigateToProfile()">
           <div class="w-full h-full rounded-full bg-black flex items-center justify-center">
-            <img *ngIf="currentUser().avatar !== '👤'" 
-                 [src]="currentUser().avatar" 
-                 [alt]="currentUser().username"
+            <img *ngIf="readonlyUser().avatar !== '👤'" 
+                 [src]="readonlyUser().avatar" 
+                 [alt]="readonlyUser().username"
                  class="w-full h-full object-cover rounded-full">
-            <span *ngIf="currentUser().avatar === '👤'">👤</span>
+            <span *ngIf="readonlyUser().avatar === '👤'">👤</span>
           </div>
         </div>
-        <span class="text-base font-bold text-white font-jetbrains cursor-pointer hover:text-neon-cyan transition-colors duration-200" (click)="navigateToProfile()">{{ currentUser().username }}</span>
+        <span class="text-base font-bold text-white font-jetbrains cursor-pointer hover:text-neon-cyan transition-colors duration-200" (click)="navigateToProfile()">{{ readonlyUser().username }}</span>
       </div>
     </header>
 

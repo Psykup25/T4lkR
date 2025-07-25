@@ -19,7 +19,11 @@ export class Home {
     private router: Router,
     private userService: UserService,
     private api: ApiService
-  ) {}
+  ) {
+    this.readonlyUser = this.userService.readonlyUser;
+  }
+  
+  readonlyUser: any;
 
   ngOnInit() {
     this.api.getHealth().subscribe({
@@ -28,10 +32,6 @@ export class Home {
     });
   }
 
-  currentUser = computed(() => ({
-    username: this.userService.currentUser()?.username,
-    avatar: this.userService.currentUser()?.avatar
-  }));
 
   conversations = [
     {

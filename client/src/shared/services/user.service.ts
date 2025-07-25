@@ -14,12 +14,26 @@ export class UserService {
     });
     return this.http.get(url, { headers });
   }
-  private _currentUser = signal({
-    username: 'Jerome_Dev',
-    avatar: '👤',
-    location: 'Franche Comté',
-    status: 'En ligne'
-  });
+  private _currentUser = signal(
+    (() => {
+      const userStr = localStorage.getItem('user');
+      if (userStr) {
+        try {
+          return JSON.parse(userStr);
+        } catch {
+          // fallback valeur par défaut si parsing échoue
+        }
+      }
+      return {
+        id: '',
+        _id: '',
+        username: 'Jerome_Dev',
+        avatar: '👤',
+        location: 'Franche Comté',
+        status: 'En ligne'
+      };
+    })()
+  );
 
   readonlyUser = this._currentUser.asReadonly();
 

@@ -2,6 +2,7 @@
 
 import { Component, signal } from '@angular/core';
 import { ApiService } from '../../../shared/services/api.service';
+import { UserService } from '../../../shared/services/user.service';
 import { Router } from '@angular/router';
 import { Background } from '../../../shared/background/background';
 import { InputComponent } from '../../../shared/input/input';
@@ -16,7 +17,7 @@ import { CommonModule } from '@angular/common';
   providers: [ApiService]
 })
 export class ChangePasswordComponent {
-  public username = JSON.parse(localStorage.getItem('user') || '{}').username || '';
+  readonlyUser;
 
   currentPassword = signal('');
   newPassword = signal('');
@@ -25,7 +26,9 @@ export class ChangePasswordComponent {
   error = signal('');
   success = signal('');
 
-  constructor(private api: ApiService, private router: Router) {}
+  constructor(private api: ApiService, private router: Router, private userService: UserService) {
+    this.readonlyUser = this.userService.readonlyUser;
+  }
 
 
   goBack() {
@@ -50,7 +53,7 @@ export class ChangePasswordComponent {
     }
     this.loading.set(true);
     try {
-      const userId = JSON.parse(localStorage.getItem('user') || '{}').id;
+      const userId = this.readonlyUser().id || this.readonlyUser()._id;
       await this.api.changePassword(userId, this.currentPassword(), this.newPassword()).toPromise();
       this.success.set('Mot de passe changé avec succès !');
       this.currentPassword.set('');

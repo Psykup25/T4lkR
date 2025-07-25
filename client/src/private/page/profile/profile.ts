@@ -1,3 +1,4 @@
+
 import { Component, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -14,45 +15,40 @@ import { CommonModule } from '@angular/common';
   templateUrl: './profile.html'
 })
 export class Profile {
+  readonlyUser: any;
+  isEditingLocation = signal(false);
+  tempLocation = signal('');
+  isAvatarPopupOpen = signal(false);
+  isEditingStatus = signal(false);
+  showAvatarPicker = signal(false);
 
-currentUser = signal<any>(null);
-isEditingLocation = signal(false);
-tempLocation = signal('');
-isAvatarPopupOpen = signal(false);
-isEditingStatus = signal(false);
-showAvatarPicker = signal(false);
+  availableAvatars = [
+    '/assets/image/Avatar1.svg',
+    '/assets/image/Avatar2.svg',
+    '/assets/image/Avatar3.svg',
+    '/assets/image/Avatar4.svg',
+    '/assets/image/Avatar5.svg',
+    '/assets/image/Avatar6.svg'
+  ];
 
-availableAvatars = [
-  '/assets/image/Avatar1.svg',
-  '/assets/image/Avatar2.svg',
-  '/assets/image/Avatar3.svg',
-  '/assets/image/Avatar4.svg',
-  '/assets/image/Avatar5.svg',
-  '/assets/image/Avatar6.svg'
-];
+  statusOptions = [
+    { value: 'En ligne', label: 'En ligne', icon: '/assets/image/online.svg' },
+    { value: 'Absent', label: 'Absent', icon: '/assets/image/away.svg' },
+    { value: 'Anonyme', label: 'Anonyme', icon: '/assets/image/Anon.svg' }
+  ];
 
-statusOptions = [
-  { value: 'En ligne', label: 'En ligne', icon: '/assets/image/online.svg' },
-  { value: 'Absent', label: 'Absent', icon: '/assets/image/away.svg' },
-  { value: 'Anonyme', label: 'Anonyme', icon: '/assets/image/Anon.svg' }
-];
-
-constructor(
-  private router: Router,
-  private userService: UserService,
-  private api: ApiService
-) {
-  // Initialise le signal avec la valeur du service si dispo
-  this.currentUser.set(this.userService.currentUser());
-}
+  constructor(
+    private router: Router,
+    private userService: UserService,
+    private api: ApiService
+  ) {
+    this.readonlyUser = this.userService.readonlyUser;
+  }
 
   ngOnInit() {
-    console.log('ngOnInit profile - user:', localStorage.getItem('user'));
-    console.log('ngOnInit profile - token:', localStorage.getItem('token'));
     const userStr = localStorage.getItem('user');
     const token = localStorage.getItem('token');
     if (!userStr || !token) {
-      console.warn('Redirection vers login car user ou token manquant');
       this.router.navigate(['/public/login']);
       return;
     }
@@ -68,7 +64,6 @@ constructor(
       if (userId) {
         this.userService.getUserFromBackend(userId, token).subscribe((freshUser: any) => {
           this.userService.setCurrentUser(freshUser);
-          this.currentUser.set(freshUser);
         });
       }
     }
@@ -83,14 +78,13 @@ constructor(
   closeAvatarPopup() { this.isAvatarPopupOpen.set(false); }
 
   selectAvatar(avatarPath: string) {
-    const user = this.userService.currentUser();
+    const user = this.readonlyUser();
     const token = localStorage.getItem('token');
     const userId = user?.id || user?._id;
     if (user && userId && token) {
       this.userService.updateUserOnBackend(userId, { avatar: avatarPath }, token).subscribe(
         response => {
           this.userService.updateAvatar(avatarPath);
-          this.userService.setCurrentUser({ ...user, avatar: avatarPath });
           this.closeAvatarPopup();
         },
         error => {
@@ -102,11 +96,11 @@ constructor(
 
   startEditLocation() {
     this.isEditingLocation.set(true);
-    this.tempLocation.set(this.currentUser()?.location || '');
+    this.tempLocation.set(this.readonlyUser()?.location || '');
   }
 
   saveLocation() {
-    const user = this.userService.currentUser();
+    const user = this.readonlyUser();
     const token = localStorage.getItem('token');
     const userId = user?.id || user?._id;
     const loc = this.tempLocation().trim();
@@ -136,7 +130,7 @@ constructor(
 
   startEditStatus() { this.isEditingStatus.set(true); }
   selectStatus(status: string) {
-    const user = this.userService.currentUser();
+    const user = this.readonlyUser();
     const token = localStorage.getItem('token');
     const userId = user?.id || user?._id;
     if (user && userId && token) {
@@ -156,17 +150,15 @@ constructor(
   cancelEditStatus() { this.isEditingStatus.set(false); }
 
   getCurrentStatusIcon(): string {
-    const currentStatus = this.currentUser()?.status;
+    const currentStatus = this.readonlyUser()?.status;
     const statusOption = this.statusOptions.find(option => option.value === currentStatus);
     return statusOption ? statusOption.icon : '/assets/image/online.svg';
   }
 
   changeAvatar(emoji: string) {
-    const user = this.currentUser();
+    const user = this.readonlyUser();
     if (!user) return;
-    user.avatar = emoji;
-    this.userService.setCurrentUser({ ...user });
-    this.currentUser.set({ ...user });
+    this.userService.updateAvatar(emoji);
     this.showAvatarPicker.set(false);
   }
 
