@@ -28,7 +28,18 @@ export const routes: Routes = [
       return true;
     }]
   },
-  { path: 'profile', component: Profile },
+  { 
+    path: 'profile', 
+    component: Profile,
+    canActivate: [() => {
+      const token = localStorage.getItem('token');
+      if (!token || token === 'undefined' || token === 'null') {
+        window.location.href = '/login';
+        return false;
+      }
+      return true;
+    }]
+  },
   { path: 'gaming', component: Gaming },
   { path: 'sport', component: Sport },
   { path: 'cinema', component: Cinema },

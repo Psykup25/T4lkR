@@ -32,8 +32,7 @@ export class ChangePasswordComponent {
 
 
   goBack() {
-    console.log('Avant navigation:', localStorage.getItem('user'), localStorage.getItem('token'));
-    this.router.navigate(['/private/profile']);
+    window.history.back();
   }
 
   async changePassword() {
