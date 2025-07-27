@@ -181,9 +181,6 @@ router.put('/user/:id', authenticateToken, async (req, res) => {
   }
 });
 
-module.exports = router;
-// Route de déconnexion : supprime le cookie JWT
-
 // Route de déconnexion : supprime le cookie JWT
 router.post('/logout', (req, res) => {
   res.clearCookie('token', {
