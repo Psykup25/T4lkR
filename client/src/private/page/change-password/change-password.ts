@@ -28,6 +28,16 @@ export class ChangePasswordComponent {
 
   constructor(private api: ApiService, private router: Router, private userService: UserService) {
     this.readonlyUser = this.userService.readonlyUser;
+    this.loadUser();
+  }
+
+  async loadUser() {
+    try {
+      const user: any = await this.userService.fetchCurrentUser().toPromise();
+      this.userService.setCurrentUser(user);
+    } catch (err) {
+      console.error('Erreur lors du chargement de l\'utilisateur:', err);
+    }
   }
 
 
@@ -52,7 +62,14 @@ export class ChangePasswordComponent {
     }
     this.loading.set(true);
     try {
-      const userId = this.readonlyUser().id || this.readonlyUser()._id;
+      const user = this.readonlyUser();
+      const userId = user?.id || user?._id;
+      console.log('ID utilisateur pour changement de mot de passe:', userId, user);
+      if (!userId) {
+        this.error.set('Impossible de récupérer l\'ID utilisateur. Veuillez vous reconnecter.');
+        this.loading.set(false);
+        return;
+      }
       await this.api.changePassword(userId, this.currentPassword(), this.newPassword()).toPromise();
       this.success.set('Mot de passe changé avec succès !');
       this.currentPassword.set('');
