@@ -26,6 +26,14 @@ export class Home {
   readonlyUser: any;
 
   ngOnInit() {
+    // Recharge l'utilisateur courant via le backend (cookie HTTPOnly)
+    this.userService.fetchCurrentUser().subscribe({
+      next: (user: any) => {
+        if (user) {
+          this.userService.setCurrentUser(user);
+        }
+      }
+    });
     this.api.getHealth().subscribe({
       next: (res) => console.log('API health:', res),
       error: (err) => console.error('API error:', err)
