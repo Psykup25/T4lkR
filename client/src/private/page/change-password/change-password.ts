@@ -75,6 +75,9 @@ export class ChangePasswordComponent {
       this.currentPassword.set('');
       this.newPassword.set('');
       this.confirmPassword.set('');
+      setTimeout(() => {
+        this.router.navigate(['/login']);
+      }, 1200);
     } catch (err: any) {
       this.error.set(err?.error?.message || 'Erreur lors du changement de mot de passe.');
     }
