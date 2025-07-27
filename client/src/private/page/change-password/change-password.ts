@@ -1,6 +1,7 @@
 
 
 import { Component, signal } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 import { ApiService } from '../../../shared/services/api.service';
 import { UserService } from '../../../shared/services/user.service';
 import { Router } from '@angular/router';
@@ -33,7 +34,7 @@ export class ChangePasswordComponent {
 
   async loadUser() {
     try {
-      const user: any = await this.userService.fetchCurrentUser().toPromise();
+      const user: any = await firstValueFrom(this.userService.fetchCurrentUser());
       this.userService.setCurrentUser(user);
     } catch (err) {
       console.error('Erreur lors du chargement de l\'utilisateur:', err);
@@ -42,7 +43,7 @@ export class ChangePasswordComponent {
 
 
   goBack() {
-    window.history.back();
+    this.router.navigate(['/profile']);
   }
 
   async changePassword() {
@@ -70,7 +71,7 @@ export class ChangePasswordComponent {
         this.loading.set(false);
         return;
       }
-      await this.api.changePassword(userId, this.currentPassword(), this.newPassword()).toPromise();
+      await firstValueFrom(this.api.changePassword(userId, this.currentPassword(), this.newPassword()));
       this.success.set('Mot de passe changé avec succès !');
       this.currentPassword.set('');
       this.newPassword.set('');

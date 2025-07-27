@@ -42,9 +42,6 @@ router.post('/user/:id/change-password', authenticateToken, async (req, res) => 
   }
 });
 
-
-// Middleware d'authentification local
-
 // GET user by id (pour profil frontend)
 router.get('/user/:id', authenticateToken, async (req, res) => {
   try {
