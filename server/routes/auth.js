@@ -1,8 +1,22 @@
+
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
+
+// GET /me : renvoie l'utilisateur courant (auth via cookie/JWT)
+router.get('/me', authenticateToken, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) return res.status(404).json({ error: 'Utilisateur non trouvé.' });
+    // Filtrer les champs sensibles
+    const { passwordHash, __v, ...safeUser } = user.toObject();
+    res.status(200).json(safeUser);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 // Changement de mot de passe
 router.post('/user/:id/change-password', authenticateToken, async (req, res) => {
@@ -30,16 +44,6 @@ router.post('/user/:id/change-password', authenticateToken, async (req, res) => 
 
 
 // Middleware d'authentification local
-function authenticateToken(req, res, next) {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
-  if (!token) return res.sendStatus(401);
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) return res.sendStatus(403);
-    req.user = user;
-    next();
-  });
-}
 
 // GET user by id (pour profil frontend)
 router.get('/user/:id', authenticateToken, async (req, res) => {
@@ -58,8 +62,8 @@ router.get('/user/:id', authenticateToken, async (req, res) => {
 
 // Middleware d'authentification local
 function authenticateToken(req, res, next) {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
+  // Lire le token depuis le cookie HTTPOnly
+  const token = req.cookies?.token;
   if (!token) return res.sendStatus(401);
   jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
     if (err) return res.sendStatus(403);
@@ -84,13 +88,13 @@ router.post('/register', async (req, res) => {
 
     const passwordHash = await bcrypt.hash(password, parseInt(process.env.BCRYPT_ROUNDS) || 12);
 
-    const user = new User({
-      username,
-      email,
-      passwordHash,
-      birthDate,
-      gender
-    });
+const user = new User({
+  username,
+  email,
+  passwordHash,
+  birthDate,
+  gender
+});
 
     await user.save();
 
@@ -121,9 +125,15 @@ router.post('/login', async (req, res) => {
       { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
     );
 
+    // Envoyer le token dans un cookie HTTPOnly
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 jours
+    });
     res.json({
       message: 'Connexion réussie',
-      token,
       user: {
         id: user._id,
         username: user.username,
@@ -169,6 +179,19 @@ router.put('/user/:id', authenticateToken, async (req, res) => {
     console.error('Erreur PUT /user/:id:', err);
     res.status(500).json({ error: err.message });
   }
+});
+
+module.exports = router;
+// Route de déconnexion : supprime le cookie JWT
+
+// Route de déconnexion : supprime le cookie JWT
+router.post('/logout', (req, res) => {
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: false,
+    sameSite: 'lax',
+  });
+  res.json({ message: 'Déconnexion réussie.' });
 });
 
 module.exports = router;

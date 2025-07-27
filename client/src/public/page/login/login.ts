@@ -34,7 +34,7 @@ export class Login {
 
     this.api.login(data).subscribe({
       next: (res: any) => {
-        localStorage.setItem('token', res.token);
+        // Le backend doit envoyer le cookie HTTPOnly automatiquement
         this.userService.setCurrentUser(res.user);
         this.router.navigate(['/home']);
       },

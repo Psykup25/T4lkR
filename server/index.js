@@ -4,6 +4,9 @@ const cors = require('cors');
 const helmet = require('helmet');
 require('dotenv').config();
 
+const cookieParser = require('cookie-parser');
+
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -11,6 +14,7 @@ const PORT = process.env.PORT || 3000;
 app.use(helmet({
   crossOriginResourcePolicy: { policy: "cross-origin" }
 }));
+app.use(cookieParser());
 const allowedOrigins = [
   'http://localhost:4200',
   'http://127.0.0.1:4200'

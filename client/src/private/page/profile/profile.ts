@@ -46,28 +46,22 @@ export class Profile {
   }
 
   ngOnInit() {
-    const userStr = localStorage.getItem('user');
-    const token = localStorage.getItem('token');
-    if (!userStr || !token) {
-      this.router.navigate(['/public/login']);
-      return;
-    }
-    this.syncUser();
+    // Nouvelle logique : charger l'utilisateur via le backend (cookie HTTPOnly)
+    this.userService.fetchCurrentUser().subscribe({
+      next: (user: any) => {
+        if (!user) {
+          this.router.navigate(['/public/login']);
+        } else {
+          this.userService.setCurrentUser(user);
+        }
+      },
+      error: () => {
+        this.router.navigate(['/public/login']);
+      }
+    });
   }
 
-  syncUser() {
-    const userStr = localStorage.getItem('user');
-    const token = localStorage.getItem('token');
-    if (userStr && token) {
-      const user = JSON.parse(userStr);
-      const userId = user.id || user._id;
-      if (userId) {
-        this.userService.getUserFromBackend(userId, token).subscribe((freshUser: any) => {
-          this.userService.setCurrentUser(freshUser);
-        });
-      }
-    }
-  }
+  // Suppression de syncUser : tout passe par fetchCurrentUser()
 
   onTempLocationInput(event: Event) {
     const value = (event.target as HTMLInputElement)?.value || '';
@@ -79,18 +73,17 @@ export class Profile {
 
   selectAvatar(avatarPath: string) {
     const user = this.readonlyUser();
-    const token = localStorage.getItem('token');
     const userId = user?.id || user?._id;
-    if (user && userId && token) {
-      this.userService.updateUserOnBackend(userId, { avatar: avatarPath }, token).subscribe(
-        response => {
+    if (user && userId) {
+      this.userService.updateUserOnBackend(userId, { avatar: avatarPath }).subscribe({
+        next: () => {
           this.userService.updateAvatar(avatarPath);
           this.closeAvatarPopup();
         },
-        error => {
+        error: (error: any) => {
           console.error('Erreur lors de la mise à jour de l\'avatar:', error);
         }
-      );
+      });
     }
   }
 
@@ -101,21 +94,20 @@ export class Profile {
 
   saveLocation() {
     const user = this.readonlyUser();
-    const token = localStorage.getItem('token');
     const userId = user?.id || user?._id;
     const loc = this.tempLocation().trim();
-    if (loc && loc.length <= 40 && user && userId && token) {
-      this.userService.updateLocationOnBackend(userId, loc, token).subscribe(
-        (response: any) => {
+    if (loc && loc.length <= 40 && user && userId) {
+      this.userService.updateLocationOnBackend(userId, loc).subscribe({
+        next: (response: any) => {
           this.userService.updateLocation(response.location);
           this.userService.setCurrentUser(response);
           this.isEditingLocation.set(false);
         },
-        error => {
+        error: (error: any) => {
           console.error('Erreur lors de la mise à jour de la localisation:', error);
           this.isEditingLocation.set(false);
         }
-      );
+      });
     } else if (loc.length > 40) {
       console.warn('La localisation ne peut pas dépasser 40 caractères');
     } else {
@@ -131,20 +123,19 @@ export class Profile {
   startEditStatus() { this.isEditingStatus.set(true); }
   selectStatus(status: string) {
     const user = this.readonlyUser();
-    const token = localStorage.getItem('token');
     const userId = user?.id || user?._id;
-    if (user && userId && token) {
-      this.userService.updateStatusOnBackend(userId, status, token).subscribe(
-        response => {
+    if (user && userId) {
+      this.userService.updateStatusOnBackend(userId, status).subscribe({
+        next: () => {
           this.userService.updateStatus(status);
           this.userService.setCurrentUser({ ...user, status });
           this.isEditingStatus.set(false);
         },
-        error => {
+        error: (error: any) => {
           console.error('Erreur lors de la mise à jour du statut:', error);
           this.isEditingStatus.set(false);
         }
-      );
+      });
     }
   }
   cancelEditStatus() { this.isEditingStatus.set(false); }
@@ -166,7 +157,16 @@ export class Profile {
   changePassword() {
     this.router.navigate(['/private/change-password']);
   }
-  logout() { console.log('Se déconnecter'); this.router.navigate(['/']); }
+  logout() {
+    this.userService.logout().subscribe({
+      next: () => {
+        this.router.navigate(['/']);
+      },
+      error: () => {
+        this.router.navigate(['/']);
+      }
+    });
+  }
   deleteAccount() { console.log('Supprimer mon compte'); }
   goHome() { this.router.navigate(['/home']); }
 }

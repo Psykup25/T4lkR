@@ -6,55 +6,40 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   providedIn: 'root'
 })
 export class UserService {
-  getUserFromBackend(id: string, token: string) {
-    const url = `http://localhost:3000/api/auth/user/${id}`;
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    });
-    return this.http.get(url, { headers });
+  getUserFromBackend(id: string) {
+    const url = `http://127.0.0.1:3000/api/auth/user/${id}`;
+    // Utilise le cookie HTTPOnly
+    return this.http.get(url, { withCredentials: true });
   }
-  private _currentUser = signal(
-    (() => {
-      const userStr = localStorage.getItem('user');
-      if (userStr) {
-        try {
-          return JSON.parse(userStr);
-        } catch {
-          // fallback valeur par défaut si parsing échoue
-        }
-      }
-      return {
-        id: '',
-        _id: '',
-        username: 'Jerome_Dev',
-        avatar: '👤',
-        location: 'Franche Comté',
-        status: 'En ligne'
-      };
-    })()
-  );
+  fetchCurrentUser() {
+    // Endpoint /api/auth/me pour récupérer l'utilisateur courant via cookie
+    return this.http.get('http://127.0.0.1:3000/api/auth/me', { withCredentials: true });
+  }
+  private _currentUser = signal({
+    id: '',
+    _id: '',
+    username: '',
+    avatar: '',
+    location: '',
+    status: ''
+  });
 
   readonlyUser = this._currentUser.asReadonly();
 
   constructor(private http: HttpClient) {}
 
-  updateUserOnBackend(id: string, userData: Partial<{ username: string; avatar: string; location: string; status: string; }>, token: string) {
-    const url = `http://localhost:3000/api/auth/user/${id}`;
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    });
-    return this.http.put(url, userData, { headers });
+  logout() {
+    // Appelle la route backend pour supprimer le cookie
+    return this.http.post('http://127.0.0.1:3000/api/auth/logout', {}, { withCredentials: true });
   }
 
-  updateStatusOnBackend(id: string, status: string, token: string) {
-    const url = `http://localhost:3000/api/auth/user/${id}`;
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    });
-    // Get the current user and update the status
+  updateUserOnBackend(id: string, userData: Partial<{ username: string; avatar: string; location: string; status: string; }>) {
+    const url = `http://127.0.0.1:3000/api/auth/user/${id}`;
+    return this.http.put(url, userData, { withCredentials: true });
+  }
+
+  updateStatusOnBackend(id: string, status: string) {
+    const url = `http://127.0.0.1:3000/api/auth/user/${id}`;
     const user = this.currentUser();
     const userData = {
       username: user?.username || '',
@@ -62,16 +47,11 @@ export class UserService {
       location: user?.location || '',
       status: status
     };
-    return this.http.put(url, userData, { headers });
+    return this.http.put(url, userData, { withCredentials: true });
   }
 
-  updateLocationOnBackend(id: string, location: string, token: string) {
-    const url = `http://localhost:3000/api/auth/user/${id}`;
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    });
-    // Get the current user and update the location
+  updateLocationOnBackend(id: string, location: string) {
+    const url = `http://127.0.0.1:3000/api/auth/user/${id}`;
     const user = this.currentUser();
     const userData = {
       username: user?.username || '',
@@ -79,7 +59,7 @@ export class UserService {
       status: user?.status || '',
       location: location
     };
-    return this.http.put(url, userData, { headers });
+    return this.http.put(url, userData, { withCredentials: true });
   }
 
   updateUser(userData: Partial<{ username: string; avatar: string; location: string; status: string; }>) {
@@ -105,20 +85,21 @@ export class UserService {
     const merged = { ...this._currentUser(), ...user };
     this.user = merged;
     this._currentUser.set(merged);
-    localStorage.setItem('user', JSON.stringify(merged));
   }
 
   currentUser() {
-    if (!this.user) {
-      const userStr = localStorage.getItem('user');
-      if (userStr) this.user = JSON.parse(userStr);
-    }
     return this.user;
   }
 
   clear() {
     this.user = null;
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
+    this._currentUser.set({
+      id: '',
+      _id: '',
+      username: '',
+      avatar: '',
+      location: '',
+      status: ''
+    });
   }
 }

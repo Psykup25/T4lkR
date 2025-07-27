@@ -15,29 +15,37 @@ export const routes: Routes = [
   { path: '', component: Accueil },
   { path: 'login', component: Login },
   { path: 'register', component: Register },
-  { 
-    path: 'home', 
+  {
+    path: 'home',
     component: Home,
     canActivate: [() => {
-      const token = localStorage.getItem('token');
-      // Vérifie que le token existe et n'est pas vide
-      if (!token || token === 'undefined' || token === 'null') {
-        window.location.href = '/login';
-        return false;
-      }
-      return true;
+      // Nouvelle logique : vérification via requête backend (cookie HTTPOnly)
+      return fetch('http://127.0.0.1:3000/api/auth/me', { credentials: 'include' })
+        .then(res => {
+          if (res.status === 200) return true;
+          window.location.href = '/login';
+          return false;
+        })
+        .catch(() => {
+          window.location.href = '/login';
+          return false;
+        });
     }]
   },
-  { 
-    path: 'profile', 
+  {
+    path: 'profile',
     component: Profile,
     canActivate: [() => {
-      const token = localStorage.getItem('token');
-      if (!token || token === 'undefined' || token === 'null') {
-        window.location.href = '/login';
-        return false;
-      }
-      return true;
+      return fetch('http://127.0.0.1:3000/api/auth/me', { credentials: 'include' })
+        .then(res => {
+          if (res.status === 200) return true;
+          window.location.href = '/login';
+          return false;
+        })
+        .catch(() => {
+          window.location.href = '/login';
+          return false;
+        });
     }]
   },
   { path: 'gaming', component: Gaming },
