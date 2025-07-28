@@ -24,15 +24,15 @@ export class Sport {
     { title: '#FOOTBALL', image: '' },
     { title: '#BASKET', image: '' },
     { title: '#TENNIS', image: '' },
-    { title: '#RUGBY', image: '' },
-    { title: '#HAND', image: '' },
-    { title: '#VOLLEY', image: '' },
-    { title: '#NATATION', image: '' },
-    { title: '#BOXE', image: '' },
-    { title: '#MMA', image: '' },
-    { title: '#F1', image: '' },
-    { title: '#CYCLISME', image: '' },
-    { title: '#RUNNING', image: '' }
+    { title: '#RUGBY', image: '/assets/image/rugby.svg' },
+    { title: '#HAND', image: '/assets/image/hand.svg' },
+    { title: '#VOLLEY', image: '/assets/image/volley.svg' },
+    { title: '#NATATION', image: '/assets/image/natation.svg' },
+    { title: '#BOXE', image: '/assets/image/boxe.svg' },
+    { title: '#MMA', image: '/assets/image/mma.svg' },
+    { title: '#F1', image: '/assets/image/f1.svg' },
+    { title: '#CYCLISME', image: '/assets/image/cyclisme.svg' },
+    { title: '#RUNNING', image: '/assets/image/running.svg' }
   ];
 
   filteredTalkzones = computed(() => {

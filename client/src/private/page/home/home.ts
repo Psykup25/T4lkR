@@ -115,4 +115,21 @@ export class Home {
   navigateToMusique() {
     this.router.navigate(['/musique']);
   }
+
+  goToTalkzone(title: string) {
+    // Associer chaque zone à son thème
+    const zone = title.replace('#', '').toLowerCase();
+    // Dictionnaire d'association zone -> thème
+    const mapping: { [key: string]: string } = {
+      cs2: 'gaming',
+      tlou: 'gaming',
+      apex: 'gaming',
+      lol: 'gaming',
+      soad: 'musique',
+      psg: 'sport',
+      // Ajoute ici d'autres associations si besoin
+    };
+    const theme = mapping[zone] || 'gaming';
+    this.router.navigate([`/${theme}/${zone}`]);
+  }
 }

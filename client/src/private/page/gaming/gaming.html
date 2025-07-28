@@ -49,9 +49,12 @@
       <h2 class="text-neon-cyan text-lg font-bold font-jetbrains text-center mb-6 tracking-wide">TALKZONES À LA UNE</h2>
       
       <div class="flex justify-center gap-4">
-        <app-talkzone title="#CS2" image=""></app-talkzone>
-        <app-talkzone title="#GTA" image=""></app-talkzone>
-        <app-talkzone title="#STEAM" image=""></app-talkzone>
+        <app-talkzone 
+          *ngFor="let talkzone of allTalkzones.slice(0,3)"
+          [title]="talkzone.title" 
+          [image]="talkzone.image"
+          (click)="goToTalkzone(talkzone.title)">
+        </app-talkzone>
       </div>
     </section>
 
@@ -65,7 +68,8 @@
         <app-talkzone 
           *ngFor="let talkzone of filteredTalkzones()"
           [title]="talkzone.title" 
-          [image]="talkzone.image">
+          [image]="talkzone.image"
+          (click)="goToTalkzone(talkzone.title)">
         </app-talkzone>
       </div>
       

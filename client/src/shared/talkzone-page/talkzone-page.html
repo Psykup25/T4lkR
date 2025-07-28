@@ -1,0 +1,26 @@
+<app-background>
+  <div class="talkzone-header">
+    <button class="back-btn" (click)="goBack()">
+      <span>&larr;</span>
+    </button>
+    <h1 class="talkzone-title">#{{ theme }}</h1>
+    <div *ngIf="showSearch" class="search-bar">
+      <input #searchInput type="text" placeholder="Rechercher..." [value]="searchQuery()" (input)="onSearchChange(searchInput.value)" />
+      <span class="search-icon">🔍</span>
+    </div>
+  </div>
+  <div class="talkzone-subtheme">
+    <img [src]="image" [alt]="subTheme" class="talkzone-img" />
+    <div class="subtheme-label">#{{ subTheme }}</div>
+  </div>
+  <div class="talkzone-posts">
+    <div *ngFor="let post of filteredPosts" class="post-card">
+      <div class="post-title">{{ post.title }}</div>
+      <div class="post-meta">
+        Par : {{ post.author }}
+        <span class="post-date">{{ post.date }}</span>
+      </div>
+      <div class="post-last-reaction">Dernière réaction : {{ post.lastReaction }}</div>
+    </div>
+  </div>
+</app-background>

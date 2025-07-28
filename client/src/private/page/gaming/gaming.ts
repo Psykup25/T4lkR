@@ -18,13 +18,19 @@ export class Gaming {
   
   constructor(private router: Router) {}
 
+  goToTalkzone(title: string) {
+    // Nettoyer le titre pour l’URL (ex: '#CS2' → 'cs2')
+    const subTheme = title.replace('#', '').toLowerCase();
+    this.router.navigate(['/gaming', subTheme]);
+  }
+
   @ViewChild('searchInput') searchInput!: ElementRef;
 
   isSearchOpen = signal(false);
   searchTerm = signal(''); // Utiliser un signal pour la réactivité
 
   allTalkzones = [
-    { title: '#CS2', image: '' },
+    { title: '#CS2', image: '/assets/image/CS2.jpg' },
     { title: '#GTA', image: '' },
     { title: '#STEAM', image: '' },
     { title: '#PS', image: '' },

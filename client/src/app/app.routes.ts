@@ -5,11 +5,13 @@ import { Register } from '../public/page/register/register';
 import { Home } from '../private/page/home/home';
 import { Profile } from '../private/page/profile/profile';
 import { Gaming } from '../private/page/gaming/gaming';
+import { Cs2PageComponent } from '../private/page/gaming/cs2/cs2-page';
 
 import { Sport } from '../private/page/sport/sport';
 import { Cinema } from '../private/page/cinema/cinema';
 import { Musique } from '../private/page/musique/musique';
 import { ChangePasswordComponent } from '../private/page/change-password/change-password';
+import { Talkzone } from '../shared/talkzone/talkzone';
 
 export const routes: Routes = [
   { path: '', component: Accueil },
@@ -49,10 +51,13 @@ export const routes: Routes = [
     }]
   },
   { path: 'gaming', component: Gaming },
+  { path: 'gaming/cs2', component: Cs2PageComponent },
   { path: 'sport', component: Sport },
   { path: 'cinema', component: Cinema },
   { path: 'musique', component: Musique },
   { path: 'private/change-password', component: ChangePasswordComponent },
+  // Route générique pour les TalkZones dynamiques
+  { path: 'talkzone/:zone', component: Talkzone },
   { path: '**', redirectTo: '' } // Wildcard route pour les pages non trouvées
 ];
 

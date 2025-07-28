@@ -21,6 +21,7 @@ export class Cinema {
   searchTerm = signal('');
 
   allTalkzones = [
+    { title: '#SOAD', image: '/assets/image/SOAD.svg' },
     { title: '#MARVEL', image: '' },
     { title: '#DC', image: '' },
     { title: '#STARWARS', image: '' },
@@ -32,7 +33,14 @@ export class Cinema {
     { title: '#DRAMA', image: '' },
     { title: '#FANTASY', image: '' },
     { title: '#THRILLER', image: '' },
-    { title: '#ROMANCE', image: '' }
+    { title: '#ROMANCE', image: '' },
+    { title: '#INCEPTION', image: '' },
+    { title: '#MATRIX', image: '' },
+    { title: '#PULP', image: '' },
+    { title: '#GODFATHER', image: '' },
+    { title: '#JOKER', image: '' },
+    { title: '#TITANIC', image: '' },
+    { title: '#AVATAR', image: '' }
   ];
 
   filteredTalkzones = computed(() => {

@@ -21,16 +21,18 @@ export class Musique {
   searchTerm = signal('');
 
   allTalkzones = [
+    { title: '#SOAD', image: '/assets/image/SOAD.svg' },
     { title: '#RAP', image: '' },
     { title: '#ROCK', image: '' },
     { title: '#POP', image: '' },
-    { title: '#ELECTRONIC', image: '' },
     { title: '#JAZZ', image: '' },
-    { title: '#CLASSICAL', image: '' },
-    { title: '#REGGAE', image: '' },
+    { title: '#CLASSIQUE', image: '' },
+    { title: '#ELECTRO', image: '' },
     { title: '#METAL', image: '' },
-    { title: '#FUNK', image: '' },
+    { title: '#REGGAE', image: '' },
     { title: '#BLUES', image: '' },
+    { title: '#FUNK', image: '' },
+    { title: '#DISCO', image: '' },
     { title: '#RNB', image: '' },
     { title: '#COUNTRY', image: '' }
   ];
